@@ -508,10 +508,54 @@ m.coords[1] === coords[1]
 );
 
 if(marker){
-marker.setPopupContent(crearPopup(datos[indice]));
+
+let popup = crearPopup(datos[indice]);
+
+popup += `
+<br>
+<button class="popup-link maps"
+onclick="mostrarOpcionesDaniela(${JSON.stringify(coords)})">
+🔙 Ver los otros emprendimientos
+</button>
+`;
+
+marker.setPopupContent(popup);
 marker.openPopup();
+
 }
 
+}
+
+}
+
+
+/* Volver a mostrar las opciones de Daniela */
+
+function mostrarOpcionesDaniela(coords){
+
+let popup = `
+<div class="popup-title">📍 Daniela Colli</div>
+<div class="popup-subtitle">Selecciona un emprendimiento</div>
+
+<button class="popup-link maps"
+onclick="mostrarEmprendimiento(${JSON.stringify(coords)}, 0)">
+💍 Patranka Artesanal
+</button>
+
+<button class="popup-link instagram"
+onclick="mostrarEmprendimiento(${JSON.stringify(coords)}, 1)">
+🧶 Rayün Expresión Artística
+</button>
+`;
+
+let marker = markers.find(m =>
+m.coords[0] === coords[0] &&
+m.coords[1] === coords[1]
+);
+
+if(marker){
+marker.setPopupContent(popup);
+marker.openPopup();
 }
 
 }
