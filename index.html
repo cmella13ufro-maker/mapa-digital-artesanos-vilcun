@@ -524,11 +524,31 @@ iconAnchor:[30,60]
    OTROS TIPOS
 ===================================================== */
 
-icons.cuero = icons.cacho;
+icons.cuero = L.divIcon({
+html:`
+<div class="pin-wrapper">
+    <div class="pin-circle">
+        <img src="ICONOS RUBRO/icono_cuero.png">
+    </div>
+</div>
+`,
+iconSize:[60,60],
+iconAnchor:[30,60]
+});
 
-icons.plateria = icons.cacho;
+icons.plateria = icons.daniela;
 
-icons.cesteria = icons.textil;
+icons.cesteria = L.divIcon({
+html:`
+<div class="pin-wrapper">
+    <div class="pin-circle">
+        <img src="ICONOS RUBRO/icono_cesteria.png">
+    </div>
+</div>
+`,
+iconSize:[60,60],
+iconAnchor:[30,60]
+});
 
 
 /* =====================================================
@@ -1149,6 +1169,7 @@ function crearPopup(a){
 ===================================================== */
 
 var markers = [];
+var danielaMarker = null;
 
 artesanos.forEach(function(a){
 
@@ -1156,66 +1177,78 @@ artesanos.forEach(function(a){
         return;
     }
 
-    var marker = L.marker(
-        a.coords,
-        {
-            icon: icons[a.tipo] || icons.textil
-        }
-    ).addTo(map);
+    /* DANIELA: UN SOLO MARCADOR PARA SUS DOS EMPRENDIMIENTOS */
+    if(a.artesana === "Daniela Colli Huenchumilla"){
 
+        if(!danielaMarker){
+            danielaMarker = L.marker(a.coords, { icon:icons.daniela }).addTo(map);
+            danielaMarker.coords = a.coords;
+            danielaMarker.emprendimientos = [a];
+            markers.push(danielaMarker);
+        }else{
+            danielaMarker.emprendimientos.push(a);
+        }
+        return;
+    }
+
+    var marker = L.marker(a.coords, { icon:icons[a.tipo] || icons.textil }).addTo(map);
     marker.coords = a.coords;
     marker.emprendimientos = [a];
-
     marker.bindPopup(crearPopup(a));
-
     marker.on('popupopen', function(e){
         var popupElement = e.popup.getElement();
-
         if(popupElement){
             L.DomEvent.disableClickPropagation(popupElement);
         }
     });
-
     markers.push(marker);
 });
 
-
 /* =====================================================
-   AGRUPAR DANIELA
+   POPUP INICIAL DE DANIELA
 ===================================================== */
 
-var danielaMarker = null;
+if(danielaMarker){
 
-var danielaEmprendimientos = artesanos.filter(function(a){
-    return (
-        a.artesana === "Daniela Colli Huenchumilla" &&
-        Array.isArray(a.coords) &&
-        a.coords.length === 2
-    );
-});
+    danielaMarker.bindPopup(`
+        <div class="popup-title">
+        📍 Daniela Colli
+        </div>
+        <div class="popup-subtitle">
+        Selecciona un emprendimiento
+        </div>
+        <button type="button" class="popup-link maps boton-patranka">
+        💍 Patranka Artesanal
+        </button>
+        <button type="button" class="popup-link instagram boton-rayun">
+        🧶 Rayün Expresión Artística
+        </button>
+    `);
 
-if(danielaEmprendimientos.length > 0){
+    danielaMarker.on('popupopen', function(e){
+        var popupElement = e.popup.getElement();
+        if(!popupElement){ return; }
+        L.DomEvent.disableClickPropagation(popupElement);
 
-    danielaMarker = markers.find(function(m){
-        return (
-            m.coords[0] === danielaEmprendimientos[0].coords[0] &&
-            m.coords[1] === danielaEmprendimientos[0].coords[1]
-        );
+        var botonPatranka = popupElement.querySelector(".boton-patranka");
+        var botonRayun = popupElement.querySelector(".boton-rayun");
+
+        if(botonPatranka){
+            botonPatranka.onclick = function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                mostrarEmprendimiento(danielaMarker.coords, 0);
+            };
+        }
+
+        if(botonRayun){
+            botonRayun.onclick = function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                mostrarEmprendimiento(danielaMarker.coords, 1);
+            };
+        }
     });
-
-    if(danielaMarker){
-
-        danielaMarker.emprendimientos = danielaEmprendimientos;
-
-        danielaMarker.setIcon(icons.daniela);
-
-        danielaMarker.off('click');
-
-        danielaMarker.on('click', function(e){
-            L.DomEvent.stopPropagation(e);
-            mostrarOpcionesDaniela();
-        });
-    }
 }
 
 /* =====================================================
