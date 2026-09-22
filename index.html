@@ -296,6 +296,86 @@ header{
 }
 
 
+
+
+/* =====================================================
+   MENÚ DE EMPRENDIMIENTOS
+===================================================== */
+#directorio-btn{
+    position:absolute;
+    top:85px;
+    right:18px;
+    z-index:1000;
+    background:#6b4f3b;
+    color:white;
+    border:2px solid white;
+    border-radius:10px;
+    padding:10px 14px;
+    font-family:'Times New Roman',serif;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,.3);
+}
+#directorio-panel{
+    display:none;
+    position:absolute;
+    top:85px;
+    right:18px;
+    z-index:1001;
+    width:330px;
+    max-height:70vh;
+    overflow-y:auto;
+    background:#fffdf8;
+    border:3px solid #6b4f3b;
+    border-radius:12px;
+    box-shadow:0 4px 14px rgba(0,0,0,.35);
+}
+.directorio-head{
+    padding:12px 14px;
+    background:#6b4f3b;
+    color:white;
+    font-weight:bold;
+    font-size:18px;
+}
+.directorio-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    padding:10px 12px;
+    border-bottom:1px solid #d6c2a8;
+    background:#fffdf8;
+}
+.directorio-item:last-child{border-bottom:none;}
+.directorio-nombre{
+    color:#6b4f3b;
+    font-weight:bold;
+    font-size:15px;
+}
+.directorio-ver{
+    flex:none;
+    background:#6b4f3b;
+    color:white;
+    border:none;
+    border-radius:7px;
+    padding:6px 9px;
+    cursor:pointer;
+    font-family:'Times New Roman',serif;
+}
+.directorio-cerrar{
+    float:right;
+    background:transparent;
+    color:white;
+    border:none;
+    font-size:20px;
+    cursor:pointer;
+}
+@media(max-width:600px){
+    #directorio-panel{left:10px;right:10px;width:auto;}
+    #directorio-btn{right:10px;}
+}
+
 </style>
 
 </head>
@@ -310,6 +390,8 @@ Mapa Georreferenciado de Artesanos de Vilcún
 
 
 <div id="map"></div>
+<button id="directorio-btn" type="button">☰ Emprendimientos</button>
+<div id="directorio-panel"></div>
 
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -1603,6 +1685,83 @@ function mostrarOpcionesDaniela(
     );
 
 }
+
+
+
+
+/* =====================================================
+   DIRECTORIO DE EMPRENDIMIENTOS
+===================================================== */
+
+function abrirPerfilDesdeDirectorio(indice){
+    var a = artesanos[indice];
+    if(!a){ return; }
+
+    var directorioPanel = document.getElementById('directorio-panel');
+    if(directorioPanel){ directorioPanel.style.display = 'none'; }
+
+    /* DANIELA: abrir su marcador único y mostrar sus dos emprendimientos */
+    if(a.artesana === "Daniela Colli Huenchumilla" && Array.isArray(a.coords) && a.coords.length === 2){
+        map.setView(a.coords, Math.max(map.getZoom(), 14));
+        mostrarOpcionesDaniela(a.coords);
+        return;
+    }
+
+    /* EMPRENDIMIENTOS CON UBICACIÓN EXACTA */
+    if(Array.isArray(a.coords) && a.coords.length === 2){
+        map.setView(a.coords, Math.max(map.getZoom(), 14));
+        var marker = markers.find(function(m){
+            return m.coords && m.coords[0] === a.coords[0] && m.coords[1] === a.coords[1];
+        });
+        if(marker){
+            marker.openPopup();
+        }
+        return;
+    }
+
+    /* EMPRENDIMIENTOS DIGITALES / SIN COORDENADA EXACTA */
+    var temp = L.popup({maxWidth:360})
+        .setLatLng(map.getCenter())
+        .setContent(crearPopup(a))
+        .openOn(map);
+}
+
+function construirDirectorio(){
+    var panel = document.getElementById('directorio-panel');
+    if(!panel){ return; }
+
+    var html = '<div class="directorio-head">Emprendimientos <button type="button" class="directorio-cerrar" onclick="cerrarDirectorio()">×</button></div>';
+
+    artesanos.forEach(function(a, indice){
+        var nombre = a.nombre;
+        if(a.artesano === "Claudio Ovando Leon"){
+            nombre += " - Digital";
+        }
+        html += '<div class="directorio-item">' +
+            '<span class="directorio-nombre">' + nombre + '</span>' +
+            '<button type="button" class="directorio-ver" onclick="abrirPerfilDesdeDirectorio(' + indice + ')">Ver perfil</button>' +
+            '</div>';
+    });
+
+    panel.innerHTML = html;
+}
+
+function cerrarDirectorio(){
+    var panel = document.getElementById('directorio-panel');
+    if(panel){ panel.style.display = 'none'; }
+}
+
+construirDirectorio();
+
+document.getElementById('directorio-btn').onclick = function(e){
+    e.stopPropagation();
+    var panel = document.getElementById('directorio-panel');
+    if(panel){
+        panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+    }
+};
+
+L.DomEvent.disableClickPropagation(document.getElementById('directorio-panel'));
 
 
 /* =====================================================
