@@ -536,7 +536,7 @@ iconSize:[60,60],
 iconAnchor:[30,60]
 });
 
-icons.plateria = icons.daniela;
+icons.plateria = L.divIcon({html:`<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS RUBRO/icono_platería_mapuche_.png"></div></div>`,iconSize:[60,60],iconAnchor:[30,60]});
 
 icons.cesteria = L.divIcon({
 html:`
@@ -1180,7 +1180,7 @@ artesanos.forEach(function(a){
     if(a.artesana === "Daniela Colli Huenchumilla"){
 
         if(!danielaMarker){
-            danielaMarker = L.marker(a.coords,{icon:icons.daniela}).addTo(map);
+            danielaMarker = L.marker(a.coords,{icon:icons.daniela}).addTo(map);\n            danielaMarker.bindPopup("");
             danielaMarker.coords = a.coords;
             danielaMarker.emprendimientos = [a];
             markers.push(danielaMarker);
