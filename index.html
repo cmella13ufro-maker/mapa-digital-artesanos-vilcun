@@ -390,6 +390,7 @@ header span{
         margin:0 auto;
     }
     .leaflet-popup-content-wrapper{
+        width:calc(100vw - 30px);
         max-width:calc(100vw - 30px);
     }
     .leaflet-popup-content{
@@ -1809,7 +1810,7 @@ function abrirPerfilDesdeDirectorio(indice){
     }
 
     /* EMPRENDIMIENTOS DIGITALES / SIN COORDENADA EXACTA */
-    var temp = L.popup({maxWidth:360})
+    var temp = L.popup({maxWidth:520})
         .setLatLng(map.getCenter())
         .setContent(crearPopup(a))
         .openOn(map);
