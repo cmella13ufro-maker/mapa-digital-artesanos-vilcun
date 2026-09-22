@@ -169,6 +169,8 @@ header span{
 .galeria-prev{left:12px;}
 .galeria-next{right:12px;}
 
+
+.emprendimiento-icono{width:22px;height:22px;object-fit:cover;border-radius:50%;border:2px solid white;vertical-align:middle;margin-right:6px;}
 .popup-link{
 
     display:block;
@@ -339,11 +341,11 @@ header span{
 
     height:18px;
 
-    object-fit:contain;
+    object-fit:cover;
 
-    border:none;
+    border:2px solid white;
 
-    border-radius:0;
+    border-radius:50%;
 
 }
 
@@ -521,6 +523,32 @@ header span{
     }
 }
 
+
+/* =====================================================
+   SIMBOLOGÍA DE ICONOS
+===================================================== */
+#simbologia{
+    position:absolute;
+    left:18px;
+    bottom:18px;
+    z-index:1000;
+    width:280px;
+    max-width:calc(100vw - 36px);
+    background:#fffdf8;
+    border:2px solid #6b4f3b;
+    border-radius:10px;
+    box-shadow:0 3px 10px rgba(0,0,0,.3);
+    padding:10px 12px;
+    box-sizing:border-box;
+}
+.simbologia-titulo{font-weight:bold;color:#6b4f3b;font-size:17px;margin-bottom:7px;text-align:center;}
+.simbologia-item{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:14px;color:#333;}
+.simbologia-item img{width:25px;height:25px;object-fit:cover;border-radius:50%;border:1px solid #d6c2a8;flex:none;}
+@media(max-width:800px){
+#simbologia{left:8px;bottom:8px;width:250px;padding:8px 10px;}
+.simbologia-titulo{font-size:15px}.simbologia-item{font-size:12px;margin:4px 0}.simbologia-item img{width:22px;height:22px;}
+}
+
 </style>
 
 </head>
@@ -538,6 +566,17 @@ header span{
 </div>
 
 <div id="map"></div>
+<div id="simbologia">
+<div class="simbologia-titulo">Simbología de iconos</div>
+<div class="simbologia-item"><img src="ICONOS RUBRO/icono_textil.png">Artesanía textil</div>
+<div class="simbologia-item"><img src="ICONOS RUBRO/icono_cuero.png">Artesanía en cuero</div>
+<div class="simbologia-item"><img src="ICONOS RUBRO/icono_artesania_en_cacho.png">Artesanía en cacho</div>
+<div class="simbologia-item"><img src="ICONOS RUBRO/icono_cesteria.png">Artesanía en fibra vegetal</div>
+<div class="simbologia-item"><img src="ICONOS RUBRO/icono_madera.png">Artesanía en madera</div>
+<div class="simbologia-item"><img src="ICONOS RUBRO/icono_suculentas.png">Artesanía con suculentas</div>
+<div class="simbologia-item"><img src="ICONOS RUBRO/icono_acrilico.png">Artesanía con acrílico</div>
+<div class="simbologia-item"><img src="ICONOS RUBRO/icono_platería_mapuche_.png">Artesanía mapuche</div>
+</div>
 <div id="directorio-panel"></div>
 
 
@@ -1485,10 +1524,10 @@ if(danielaMarker){
         Selecciona un emprendimiento
         </div>
         <button type="button" class="popup-link maps boton-patranka">
-        💍 Patranka Artesanal
+        <img class="emprendimiento-icono" src="ICONOS RUBRO/icono_platería_mapuche_.png"> Patranka Artesanal
         </button>
         <button type="button" class="popup-link instagram boton-rayun">
-        🧶 Rayün Expresión Artística
+        <img class="emprendimiento-icono" src="ICONOS RUBRO/icono_acrilico.png"> Rayün Expresión Artística
         </button>
     `);
 
