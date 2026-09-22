@@ -1180,7 +1180,8 @@ artesanos.forEach(function(a){
     if(a.artesana === "Daniela Colli Huenchumilla"){
 
         if(!danielaMarker){
-            danielaMarker = L.marker(a.coords,{icon:icons.daniela}).addTo(map);\n            danielaMarker.bindPopup("");
+            danielaMarker = L.marker(a.coords,{icon:icons.daniela}).addTo(map);
+            danielaMarker.bindPopup("");
             danielaMarker.coords = a.coords;
             danielaMarker.emprendimientos = [a];
             markers.push(danielaMarker);
