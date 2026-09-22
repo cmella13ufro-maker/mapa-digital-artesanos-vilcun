@@ -1150,267 +1150,73 @@ function crearPopup(a){
 
 var markers = [];
 
+artesanos.forEach(function(a){
 
-artesanos.forEach(a=>{
-
-
-    /* NO CREAR MARCADOR SIN COORDENADAS */
-
-    if(
-        !Array.isArray(a.coords) ||
-        a.coords.length !== 2
-    ){
-
+    if(!Array.isArray(a.coords) || a.coords.length !== 2){
         return;
-
     }
 
-
-    /* =================================================
-       DANIELA
-    ================================================= */
-
-    if(
-        a.artesana ===
-        "Daniela Colli Huenchumilla"
-    ){
-
-        let existente =
-            markers.find(m =>
-
-                m.coords[0] === a.coords[0] &&
-
-                m.coords[1] === a.coords[1]
-
-            );
-
-
-        /* =============================================
-           SI YA EXISTE EL PUNTO
-        ============================================= */
-
-        if(existente){
-
-            existente.emprendimientos.push(a);
-
-            return;
-
+    var marker = L.marker(
+        a.coords,
+        {
+            icon: icons[a.tipo] || icons.textil
         }
+    ).addTo(map);
 
+    marker.coords = a.coords;
+    marker.emprendimientos = [a];
 
-        /* =============================================
-           MENÚ DANIELA
-        ============================================= */
+    marker.bindPopup(crearPopup(a));
 
-        let popup = `
+    marker.on('popupopen', function(e){
+        var popupElement = e.popup.getElement();
 
-        <div class="popup-title">
-        📍 Daniela Colli
-        </div>
+        if(popupElement){
+            L.DomEvent.disableClickPropagation(popupElement);
+        }
+    });
 
-        <div class="popup-subtitle">
-        Selecciona un emprendimiento
-        </div>
-
-
-        <button
-        type="button"
-        class="popup-link maps boton-patranka"
-        >
-        💍 Patranka Artesanal
-        </button>
-
-
-        <button
-        type="button"
-        class="popup-link instagram boton-rayun"
-        >
-        🧶 Rayün Expresión Artística
-        </button>
-
-        `;
-
-
-        /* =============================================
-           CREAR MARCADOR
-        ============================================= */
-
-        let marker = L.marker(
-
-            a.coords,
-
-            {
-
-                icon:icons.daniela
-
-            }
-
-        )
-
-        .addTo(map)
-
-        .bindPopup(popup);
-
-
-        /* =============================================
-           PROTEGER POPUP DANIELA
-        ============================================= */
-
-        marker.on(
-            'popupopen',
-            function(e){
-
-                let popupElement =
-                    e.popup.getElement();
-
-
-                if(!popupElement){
-
-                    return;
-
-                }
-
-
-                /*
-                Evita que Leaflet cierre
-                el popup al hacer clic dentro
-                */
-
-                L.DomEvent.disableClickPropagation(
-                    popupElement
-                );
-
-
-                /* PATRANKA */
-
-                let botonPatranka =
-                    popupElement.querySelector(
-                        ".boton-patranka"
-                    );
-
-
-                if(botonPatranka){
-
-                    botonPatranka.onclick =
-                        function(e){
-
-                            e.preventDefault();
-
-                            e.stopPropagation();
-
-                            mostrarEmprendimiento(
-                                a.coords,
-                                0
-                            );
-
-                        };
-
-                }
-
-
-                /* RAYÜN */
-
-                let botonRayun =
-                    popupElement.querySelector(
-                        ".boton-rayun"
-                    );
-
-
-                if(botonRayun){
-
-                    botonRayun.onclick =
-                        function(e){
-
-                            e.preventDefault();
-
-                            e.stopPropagation();
-
-                            mostrarEmprendimiento(
-                                a.coords,
-                                1
-                            );
-
-                        };
-
-                }
-
-            }
-        );
-
-
-        /* =============================================
-           GUARDAR DATOS
-        ============================================= */
-
-        marker.coords = a.coords;
-
-        marker.emprendimientos = [a];
-
-        markers.push(marker);
-
-
-    }
-
-    else{
-
-
-        /* =============================================
-           RESTO DE ARTESANOS
-        ============================================= */
-
-        let marker = L.marker(
-
-            a.coords,
-
-            {
-
-                icon:
-                    icons[a.tipo] ||
-                    icons.textil
-
-            }
-
-        )
-
-        .addTo(map)
-
-        .bindPopup(
-            crearPopup(a)
-        );
-
-
-        /* PROTEGER POPUP */
-
-        marker.on(
-            'popupopen',
-            function(e){
-
-                let popupElement =
-                    e.popup.getElement();
-
-
-                if(popupElement){
-
-                    L.DomEvent.disableClickPropagation(
-                        popupElement
-                    );
-
-                }
-
-            }
-        );
-
-
-        marker.coords = a.coords;
-
-        marker.emprendimientos = [a];
-
-        markers.push(marker);
-
-    }
-
+    markers.push(marker);
 });
 
+
+/* =====================================================
+   AGRUPAR DANIELA
+===================================================== */
+
+var danielaMarker = null;
+
+var danielaEmprendimientos = artesanos.filter(function(a){
+    return (
+        a.artesana === "Daniela Colli Huenchumilla" &&
+        Array.isArray(a.coords) &&
+        a.coords.length === 2
+    );
+});
+
+if(danielaEmprendimientos.length > 0){
+
+    danielaMarker = markers.find(function(m){
+        return (
+            m.coords[0] === danielaEmprendimientos[0].coords[0] &&
+            m.coords[1] === danielaEmprendimientos[0].coords[1]
+        );
+    });
+
+    if(danielaMarker){
+
+        danielaMarker.emprendimientos = danielaEmprendimientos;
+
+        danielaMarker.setIcon(icons.daniela);
+
+        danielaMarker.off('click');
+
+        danielaMarker.on('click', function(e){
+            L.DomEvent.stopPropagation(e);
+            mostrarOpcionesDaniela();
+        });
+    }
+}
 
 /* =====================================================
    GUARDAR EMPRENDIMIENTOS DE DANIELA
