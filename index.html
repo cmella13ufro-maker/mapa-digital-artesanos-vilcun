@@ -338,8 +338,7 @@ imagenes:["PRODUCTOS ARTESANOS/PROD. FANNY CASTRO/F.C_1.jpg","PRODUCTOS ARTESANO
 
 var markers = [];
 
-artesanos.forEach(a=>{
-if(!Array.isArray(a.coords) || a.coords.length !== 2) return;
+function crearPopup(a){
 
 let popup = `
 <div class="popup-title">${a.nombre}</div>
@@ -348,7 +347,7 @@ let popup = `
 <div><b>Pago:</b><br>${a.pago}</div>
 `;
 
-if(a.imagenes){
+if(a.imagenes && a.imagenes.length > 0){
 a.imagenes.forEach(img=>{
 popup += `<img src="${img}" class="popup-img">`;
 });
@@ -374,12 +373,151 @@ WhatsApp
 
 popup += `<a class="popup-link maps" href="https://www.google.com/maps?q=${a.coords[0]},${a.coords[1]}" target="_blank">Cómo llegar</a>`;
 
+return popup;
+}
+
+
+/* Crear marcadores */
+
+artesanos.forEach(a=>{
+
+if(!Array.isArray(a.coords) || a.coords.length !== 2) return;
+
+
+/* Daniela Colli: dos emprendimientos en el mismo punto */
+
+if(a.artesana === "Daniela Colli Huenchumilla"){
+
+let existente = markers.find(m =>
+m.coords[0] === a.coords[0] &&
+m.coords[1] === a.coords[1]
+);
+
+if(existente){
+
+existente.emprendimientos.push(a);
+
+return;
+
+}
+
+let grupo = {
+coords:a.coords,
+emprendimientos:[a]
+};
+
+let popup = `
+<div class="popup-title">📍 Daniela Colli</div>
+<div class="popup-subtitle">Selecciona un emprendimiento</div>
+
+<button class="popup-link maps"
+onclick="mostrarEmprendimiento(${JSON.stringify(a.coords)}, 0)">
+💍 Patranka Artesanal
+</button>
+
+<button class="popup-link instagram"
+onclick="mostrarEmprendimiento(${JSON.stringify(a.coords)}, 1)">
+🧶 Rayün Expresión Artística
+</button>
+`;
+
 let marker = L.marker(a.coords,{icon:icons[a.tipo] || icons.textil})
 .addTo(map)
 .bindPopup(popup);
 
+marker.coords = a.coords;
+marker.emprendimientos = [a];
+
 markers.push(marker);
+
+}else{
+
+let marker = L.marker(a.coords,{icon:icons[a.tipo] || icons.textil})
+.addTo(map)
+.bindPopup(crearPopup(a));
+
+marker.coords = a.coords;
+marker.emprendimientos = [a];
+
+markers.push(marker);
+
+}
+
 });
+
+
+/* Guardar los dos emprendimientos de Daniela */
+
+let danielaMarkers = markers.filter(m =>
+m.emprendimientos &&
+m.emprendimientos.length > 0 &&
+m.emprendimientos[0].artesana === "Daniela Colli Huenchumilla"
+);
+
+if(danielaMarkers.length > 0){
+
+let emprendimientos = [];
+
+artesanos.forEach(a=>{
+if(
+a.artesana === "Daniela Colli Huenchumilla" &&
+Array.isArray(a.coords) &&
+a.coords.length === 2
+){
+emprendimientos.push(a);
+}
+});
+
+danielaMarkers[0].emprendimientos = emprendimientos;
+
+let popup = `
+<div class="popup-title">📍 Daniela Colli</div>
+<div class="popup-subtitle">Selecciona un emprendimiento</div>
+
+<button class="popup-link maps"
+onclick="mostrarEmprendimiento(${JSON.stringify(emprendimientos[0].coords)}, 0)">
+💍 Patranka Artesanal
+</button>
+
+<button class="popup-link instagram"
+onclick="mostrarEmprendimiento(${JSON.stringify(emprendimientos[0].coords)}, 1)">
+🧶 Rayün Expresión Artística
+</button>
+`;
+
+danielaMarkers[0].setPopupContent(popup);
+
+}
+
+
+/* Mostrar la ficha del emprendimiento seleccionado */
+
+function mostrarEmprendimiento(coords, indice){
+
+let datos = artesanos.filter(a =>
+a.artesana === "Daniela Colli Huenchumilla" &&
+a.coords[0] === coords[0] &&
+a.coords[1] === coords[1]
+);
+
+if(datos[indice]){
+
+let marker = markers.find(m =>
+m.coords[0] === coords[0] &&
+m.coords[1] === coords[1]
+);
+
+if(marker){
+marker.setPopupContent(crearPopup(datos[indice]));
+marker.openPopup();
+}
+
+}
+
+}
+
+
+/* Ajustar mapa a los marcadores */
 
 if (markers.length > 0) {
 var group = L.featureGroup(markers);
