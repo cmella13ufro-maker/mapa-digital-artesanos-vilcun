@@ -2,131 +2,318 @@
 <html lang="es">
 
 <head>
+
 <meta charset="utf-8">
+
 <title>Mapa Georreferenciado de Artesanos de Vilcún</title>
 
-<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<meta
+http-equiv="Content-Security-Policy"
+content="upgrade-insecure-requests"
+>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link
+rel="stylesheet"
+href="https://unpkg.com/leaflet/dist/leaflet.css"
+/>
+
 
 <style>
 
+/* =====================================================
+   ESTILO GENERAL
+===================================================== */
+
 body{
+
     margin:0;
+
     font-family:'Times New Roman', serif;
+
     background:#f4f1ea;
+
 }
+
 
 header{
+
     background:#6b4f3b;
+
     color:white;
+
     text-align:center;
+
     padding:15px;
+
     font-size:28px;
+
     font-weight:bold;
+
 }
+
 
 #map{
+
     height:calc(100vh - 70px);
+
     width:100%;
+
 }
+
+
+/* =====================================================
+   POPUP
+===================================================== */
 
 .leaflet-popup-content-wrapper{
+
     border-radius:15px;
+
     border:3px solid #6b4f3b;
+
     background:#fffdf8;
+
 }
+
 
 .popup-title{
+
     font-size:20px;
+
     font-weight:bold;
+
     color:#6b4f3b;
+
 }
+
 
 .popup-subtitle{
+
     font-size:14px;
+
     color:#555;
+
     font-style:italic;
+
     margin-bottom:10px;
+
 }
+
 
 .popup-img{
+
     width:90px;
+
     height:90px;
+
     object-fit:cover;
+
     border-radius:10px;
+
     margin:3px;
+
     border:2px solid #d6c2a8;
+
 }
+
 
 .popup-link{
+
     display:block;
+
     width:100%;
+
     box-sizing:border-box;
+
     margin-top:8px;
+
     padding:8px;
+
     text-align:center;
+
     text-decoration:none;
+
     color:white;
+
     border-radius:8px;
+
     font-weight:bold;
+
     border:none;
+
     cursor:pointer;
+
     font-family:'Times New Roman', serif;
+
     font-size:14px;
+
 }
 
-.instagram{background:#c13584;}
-.facebook{background:#1877F2;}
-.whatsapp{background:#25d366;}
-.maps{background:#4285F4;}
+
+.instagram{
+
+    background:#c13584;
+
+}
+
+
+.facebook{
+
+    background:#1877F2;
+
+}
+
+
+.whatsapp{
+
+    background:#25d366;
+
+}
+
+
+.maps{
+
+    background:#4285F4;
+
+}
+
+
+/* =====================================================
+   PIN GENERAL
+===================================================== */
 
 .leaflet-div-icon{
-    background: transparent !important;
-    border: none !important;
+
+    background:transparent !important;
+
+    border:none !important;
+
 }
+
 
 .pin-wrapper{
+
     position:relative;
+
     width:60px;
+
     height:60px;
+
 }
+
 
 .pin-circle{
+
     width:52px;
+
     height:52px;
+
     background:#2e7d32;
+
     border-radius:50% 50% 50% 0;
+
     transform:rotate(-45deg);
+
     border:3px solid white;
+
     box-shadow:0 3px 8px rgba(0,0,0,0.35);
+
     position:absolute;
+
     top:0;
+
     left:4px;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
+
 }
+
 
 .pin-circle img{
+
     width:32px;
+
     height:32px;
+
     object-fit:cover;
+
     border-radius:50%;
+
     transform:rotate(45deg);
+
     border:2px solid white;
+
 }
 
+
+/* =====================================================
+   ICONO ESPECIAL DANIELA
+   ACRÍLICO + PLATERÍA MAPUCHE
+===================================================== */
+
+.daniela-pin{
+
+    background:#2e7d32;
+
+}
+
+
+.daniela-iconos{
+
+    width:40px;
+
+    height:40px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:3px;
+
+    transform:rotate(45deg);
+
+}
+
+
+.daniela-iconos img{
+
+    width:18px;
+
+    height:18px;
+
+    object-fit:contain;
+
+    border:none;
+
+    border-radius:0;
+
+}
+
+
 </style>
+
 </head>
+
 
 <body>
 
-<header>Mapa Georreferenciado de Artesanos de Vilcún</header>
+
+<header>
+Mapa Georreferenciado de Artesanos de Vilcún
+</header>
+
 
 <div id="map"></div>
 
+
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 
 <script>
 
@@ -134,13 +321,22 @@ header{
    MAPA
 ===================================================== */
 
-var map = L.map('map').setView([-38.75,-72.35],10);
+var map = L.map('map').setView(
+    [-38.75,-72.35],
+    10
+);
+
 
 L.tileLayer(
+
 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+
 {
+
     attribution:'Tiles © Esri'
+
 }
+
 ).addTo(map);
 
 
@@ -149,34 +345,67 @@ L.tileLayer(
 ===================================================== */
 
 var vilcun = {
+
 "type":"Feature",
+
 "geometry":{
+
 "type":"Polygon",
+
 "coordinates":[[
+
 [-72.30,-38.58],
+
 [-72.05,-38.60],
+
 [-71.90,-38.62],
+
 [-71.85,-38.75],
+
 [-71.90,-38.92],
+
 [-72.10,-39.05],
+
 [-72.30,-39.10],
+
 [-72.55,-38.95],
+
 [-72.60,-38.80],
+
 [-72.60,-38.65],
+
 [-72.45,-38.55],
+
 [-72.30,-38.58]
+
 ]]
+
 }
+
 };
 
-L.geoJSON(vilcun,{
+
+L.geoJSON(
+
+vilcun,
+
+{
+
 style:{
+
     color:"#8b5a2b",
+
     weight:3,
+
     fillColor:"#c2b280",
+
     fillOpacity:0.15
+
 }
-}).addTo(map);
+
+}
+
+).addTo(map);
 
 
 /* =====================================================
@@ -185,59 +414,158 @@ style:{
 
 var icons = {
 
+
 textil: L.divIcon({
+
 html:`
+
 <div class="pin-wrapper">
+
     <div class="pin-circle">
-        <img src="ICONOS RUBRO/icono_textil.png">
+
+        <img
+        src="ICONOS RUBRO/icono_textil.png"
+        >
+
     </div>
+
 </div>
+
 `,
+
 iconSize:[60,60],
+
 iconAnchor:[30,60]
+
 }),
+
+
 
 madera: L.divIcon({
+
 html:`
+
 <div class="pin-wrapper">
+
     <div class="pin-circle">
-        <img src="ICONOS RUBRO/icono_madera.png">
+
+        <img
+        src="ICONOS RUBRO/icono_madera.png"
+        >
+
     </div>
+
 </div>
+
 `,
+
 iconSize:[60,60],
+
 iconAnchor:[30,60]
+
 }),
+
+
 
 suculentas: L.divIcon({
+
 html:`
+
 <div class="pin-wrapper">
+
     <div class="pin-circle">
-        <img src="ICONOS RUBRO/icono_suculentas.png">
+
+        <img
+        src="ICONOS RUBRO/icono_suculentas.png"
+        >
+
     </div>
+
 </div>
+
 `,
+
 iconSize:[60,60],
+
 iconAnchor:[30,60]
+
 }),
 
+
+
 cacho: L.divIcon({
+
 html:`
+
 <div class="pin-wrapper">
+
     <div class="pin-circle">
-        <img src="ICONOS RUBRO/icono_artesania_en_cacho.png">
+
+        <img
+        src="ICONOS RUBRO/icono_artesania_en_cacho.png"
+        >
+
     </div>
+
 </div>
+
 `,
+
 iconSize:[60,60],
+
 iconAnchor:[30,60]
+
 })
 
 };
 
+
+/* =====================================================
+   OTROS TIPOS
+===================================================== */
+
 icons.cuero = icons.cacho;
+
 icons.plateria = icons.cacho;
+
 icons.cesteria = icons.textil;
+
+
+/* =====================================================
+   ICONO DANIELA
+===================================================== */
+
+icons.daniela = L.divIcon({
+
+html:`
+
+<div class="pin-wrapper">
+
+    <div class="pin-circle daniela-pin">
+
+        <div class="daniela-iconos">
+
+            <img
+            src="ICONOS RUBRO/icono_acrilico.png"
+            >
+
+            <img
+            src="ICONOS RUBRO/icono_platería_mapuche_.png"
+            >
+
+        </div>
+
+    </div>
+
+</div>
+
+`,
+
+iconSize:[60,60],
+
+iconAnchor:[30,60]
+
+});
 
 
 /* =====================================================
@@ -246,202 +574,436 @@ icons.cesteria = icons.textil;
 
 var artesanos = [
 
+
+/* =====================================================
+   EDITH
+===================================================== */
+
 {
+
 nombre:"Pinta Lanasol",
+
 artesana:"Edith Peña Salgado",
+
 tipo:"textil",
+
 coords:[-38.747830,-72.265670],
+
 descripcion:"Textiles en vellón y lana natural.",
+
 pago:"Transbank / Transferencia / Efectivo",
+
 instagram:"https://www.instagram.com/pinta_lanasol",
+
 facebook:"https://www.facebook.com/marisol.pena.684863",
+
 whatsapp:"56981975862",
+
 imagenes:[
+
 "https://i.imgur.com/wxCg56M.png"
+
 ]
+
 },
 
+
+/* =====================================================
+   CARMEN
+===================================================== */
+
 {
+
 nombre:"Artesanías Carmencita",
+
 artesana:"Carmen Salazar Ramírez",
+
 tipo:"textil",
+
 coords:[-38.721586,-72.268107],
+
 descripcion:"Tejidos de lana natural e industrial.",
+
 pago:"Transferencia / Efectivo",
+
 instagram:"https://www.instagram.com/artesanias_carmencita",
+
 facebook:"",
+
 whatsapp:"56993697879",
+
 imagenes:[
+
 "PRODUCTOS ARTESANOS/PROD. CARMEN SALAZAR/C.G.S.R_1.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. CARMEN SALAZAR/C.G.S.R_2.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. CARMEN SALAZAR/C.G.S.R_3.jpg"
+
 ]
+
 },
 
+
+/* =====================================================
+   FLORA
+===================================================== */
+
 {
+
 nombre:"Manos al Telar",
+
 artesana:"Flora Cheuquelaf",
+
 tipo:"textil",
+
 coords:[-38.69495,-72.45073],
+
 descripcion:"Tejidos y flores eternas.",
+
 pago:"Transferencia / Efectivo",
+
 instagram:"",
+
 facebook:"",
+
 whatsapp:"56962921021",
+
 imagenes:[]
+
 },
 
+
+/* =====================================================
+   DORIS
+===================================================== */
+
 {
+
 nombre:"Pulil Domo Artesanías",
+
 artesana:"Doris Henríquez",
+
 tipo:"textil",
+
 coords:[-38.674955,-72.458512],
+
 descripcion:"Telares mapuche en lana natural.",
+
 pago:"Transbank / Transferencia / Efectivo",
+
 instagram:"https://www.instagram.com/pulil_domo_artesanias/",
+
 facebook:"https://www.facebook.com/Doris.Henriquez01",
+
 whatsapp:"56954458945",
+
 imagenes:[
+
 "PRODUCTOS ARTESANOS/PROD. DORIS HENRIQUEZ/D.H_1.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. DORIS HENRIQUEZ/D.H_2.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. DORIS HENRIQUEZ/D.H_3.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. DORIS HENRIQUEZ/D.H_4.jpg"
+
 ]
+
 },
 
+
+/* =====================================================
+   SANDRA
+===================================================== */
+
 {
+
 nombre:"Sandra Leal",
+
 artesana:"Sandra Leal Cortez",
+
 tipo:"madera",
+
 coords:[-38.680386,-72.001572],
+
 descripcion:"Madera reciclada pintada a mano.",
+
 pago:"Transferencia / Efectivo",
+
 instagram:"",
+
 facebook:"",
+
 whatsapp:"56986255192",
+
 imagenes:[
+
 "PRODUCTOS ARTESANOS/PROD. SANDRA LEAL/S.L_1.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. SANDRA LEAL/S.L_2.jpg"
+
 ]
+
 },
 
+
+/* =====================================================
+   MIRNA
+===================================================== */
+
 {
+
 nombre:"Cactus y Suculentas",
+
 artesana:"Mirna Garrido",
+
 tipo:"suculentas",
+
 coords:[-38.689167,-72.006111],
+
 descripcion:"Maceteros decorativos.",
+
 pago:"Transferencia / Efectivo",
+
 instagram:"",
+
 facebook:"",
+
 whatsapp:"56933796973",
+
 imagenes:[
+
 "PRODUCTOS ARTESANOS/PROD. MIRNA GARRIDO/M.G_1.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. MIRNA GARRIDO/M.G_2.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. MIRNA GARRIDO/M.G_3.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. MIRNA GARRIDO/M.G_4.jpg"
+
 ]
+
 },
 
+
+/* =====================================================
+   JUAN
+===================================================== */
+
 {
+
 nombre:"Tienda Isla Kullkull",
+
 artesana:"Juan Ricardo Troncoso Morales",
+
 tipo:"cacho",
+
 coords:[-38.672876,-72.460349],
+
 descripcion:"Artesanía en cacho de buey.",
+
 pago:"Transbank / Transferencia / Efectivo",
+
 instagram:"https://www.instagram.com/tiendaislakullkull",
+
 facebook:"https://www.facebook.com/tiendaislakullkull",
+
 whatsapp:"56981795417",
+
 imagenes:[
+
 "PRODUCTOS ARTESANOS/PROD. JUAN TRONCOSO/J.R.T_1.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. JUAN TRONCOSO/J.R.T_2.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. JUAN TRONCOSO/J.R.T_3.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. JUAN TRONCOSO/J.R.T_4.jpg"
+
 ]
+
 },
 
+
+/* =====================================================
+   DANIELA - PATRANKA
+===================================================== */
+
 {
+
 nombre:"Patranka Artesanal",
+
 artesana:"Daniela Colli Huenchumilla",
+
 tipo:"plateria",
+
 coords:[-38.678374,-72.424235],
+
 descripcion:"Joyería mapuche en plata",
+
 pago:"Transbank / Transferencia / Efectivo",
+
 instagram:"https://www.instagram.com/patranka_artesanal/",
+
 facebook:"https://web.facebook.com/profile.php?id=100083321740026",
+
 whatsapp:"56948588721",
+
 imagenes:[
+
 "PRODUCTOS ARTESANOS/PROD. DANIELA COLLI/PATRANKA ARTESANAL/D.C_P-A_1.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. DANIELA COLLI/PATRANKA ARTESANAL/D.C_P-A_2.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. DANIELA COLLI/PATRANKA ARTESANAL/D.C_P-A_3.jpg"
+
 ]
+
 },
 
+
+/* =====================================================
+   DANIELA - RAYÜN
+===================================================== */
+
 {
+
 nombre:"Rayün Expresión Artística",
+
 artesana:"Daniela Colli Huenchumilla",
+
 tipo:"textil",
+
 coords:[-38.678374,-72.424235],
+
 descripcion:"Artesanía en vellón, productos hechos con telar mapuche y productos pintados a mano a pedido",
+
 pago:"Transbank / Transferencia / Efectivo",
+
 instagram:"https://www.instagram.com/rayun.expresion.artistica/",
+
 facebook:"https://web.facebook.com/RAYUNpincelArte",
+
 whatsapp:"56985911407",
+
 imagenes:[
+
 "PRODUCTOS ARTESANOS/PROD. DANIELA COLLI/RAYUN EXPRESION ARTISTICA/D.C_R-E-A_1.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. DANIELA COLLI/RAYUN EXPRESION ARTISTICA/D.C_R-E-A_2.jpg"
+
 ]
+
 },
 
+
+/* =====================================================
+   RICARDO
+===================================================== */
+
 {
+
 nombre:"Artesanías Don Riki",
+
 artesano:"Ricardo Olivares",
+
 tipo:"cuero",
+
 coords:[],
+
 descripcion:"Artesanías en cuero carpincho",
+
 pago:"Transbank / Transferencia / Efectivo",
+
 facebook:"https://web.facebook.com/profile.php?id=61594028150135",
+
 whatsapp:"56958970159",
+
 imagenes:[
+
 "PRODUCTOS ARTESANOS/PROD. RICARDO OLIVARES/R.O_1.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. RICARDO OLIVARES/R.O_2.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. RICARDO OLIVARES/R.O_3.jpg"
+
 ]
+
 },
 
+
+/* =====================================================
+   CLAUDIO
+===================================================== */
+
 {
+
 nombre:"Choskiai",
+
 artesano:"Claudio Ovando Leon",
+
 tipo:"cuero",
+
 coords:[],
+
 descripcion:"Artesanía en cuero, especialmente marroquinería",
+
 pago:"Transbank / Transferencia / Efectivo",
+
 instagram:"https://www.instagram.com/choskiai/",
+
 facebook:"https://web.facebook.com/profile.php?id=100063478505271",
+
 whatsapp:"56989989344",
+
 imagenes:[
+
 "PRODUCTOS ARTESANOS/PROD. CLAUDIO OVANDO/C.O_1.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. CLAUDIO OVANDO/C.O_2.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. CLAUDIO OVANDO/C.O_3.jpg"
+
 ]
+
 },
 
+
+/* =====================================================
+   FANNY
+===================================================== */
+
 {
+
 nombre:"Artesanía Suyai Mapu",
+
 artesana:"Fanny Castro Gajardo",
+
 tipo:"cesteria",
+
 coords:[-38.636195,-72.383702],
+
 descripcion:"Artesanía en fibra vegetal",
+
 pago:"Transbank / Transferencia / Efectivo",
+
 instagram:"https://www.instagram.com/artesaniasuyaimapu/",
+
 facebook:"https://web.facebook.com/fanny.castrogajardo",
+
 whatsapp:"56988809587",
+
 imagenes:[
+
 "PRODUCTOS ARTESANOS/PROD. FANNY CASTRO/F.C_1.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. FANNY CASTRO/F.C_2.jpg",
+
 "PRODUCTOS ARTESANOS/PROD. FANNY CASTRO/F.C_3.jpg"
+
 ]
+
 }
 
 ];
@@ -453,98 +1015,131 @@ imagenes:[
 
 function crearPopup(a){
 
-let popup = `
-<div class="popup-title">${a.nombre}</div>
+    let popup = `
 
-<div class="popup-subtitle">
-${a.artesana || a.artesano || ""}
-</div>
+    <div class="popup-title">
+    ${a.nombre}
+    </div>
 
-<div>
-<b>Descripción:</b><br>
-${a.descripcion}
-</div>
+    <div class="popup-subtitle">
+    ${a.artesana || a.artesano || ""}
+    </div>
 
-<div>
-<b>Pago:</b><br>
-${a.pago}
-</div>
-`;
+    <div>
+    <b>Descripción:</b><br>
+    ${a.descripcion}
+    </div>
 
+    <div>
+    <b>Pago:</b><br>
+    ${a.pago}
+    </div>
 
-/* FOTOS */
-
-if(a.imagenes && a.imagenes.length > 0){
-
-a.imagenes.forEach(img=>{
-
-popup += `
-<img src="${img}" class="popup-img">
-`;
-
-});
-
-}
+    `;
 
 
-/* INSTAGRAM */
+    /* FOTOS */
 
-if(a.instagram){
+    if(a.imagenes && a.imagenes.length > 0){
 
-popup += `
-<a class="popup-link instagram"
-href="${a.instagram}"
-target="_blank">
-Instagram
-</a>
-`;
+        a.imagenes.forEach(img=>{
 
-}
+            popup += `
 
+            <img
+            src="${img}"
+            class="popup-img"
+            >
 
-/* FACEBOOK */
+            `;
 
-if(a.facebook){
+        });
 
-popup += `
-<a class="popup-link facebook"
-href="${a.facebook}"
-target="_blank">
-Facebook
-</a>
-`;
-
-}
+    }
 
 
-/* WHATSAPP */
+    /* INSTAGRAM */
 
-if(a.whatsapp){
+    if(a.instagram){
 
-let num = a.whatsapp.replace(/\D/g,'');
+        popup += `
 
-popup += `
-<a class="popup-link whatsapp"
-href="https://api.whatsapp.com/send?phone=${num}"
-target="_blank">
-WhatsApp
-</a>
-`;
+        <a
+        class="popup-link instagram"
+        href="${a.instagram}"
+        target="_blank"
+        >
+        Instagram
+        </a>
 
-}
+        `;
+
+    }
 
 
-/* GOOGLE MAPS */
+    /* FACEBOOK */
 
-popup += `
-<a class="popup-link maps"
-href="https://www.google.com/maps?q=${a.coords[0]},${a.coords[1]}"
-target="_blank">
-Cómo llegar
-</a>
-`;
+    if(a.facebook){
 
-return popup;
+        popup += `
+
+        <a
+        class="popup-link facebook"
+        href="${a.facebook}"
+        target="_blank"
+        >
+        Facebook
+        </a>
+
+        `;
+
+    }
+
+
+    /* WHATSAPP */
+
+    if(a.whatsapp){
+
+        let num = a.whatsapp.replace(/\D/g,'');
+
+        popup += `
+
+        <a
+        class="popup-link whatsapp"
+        href="https://api.whatsapp.com/send?phone=${num}"
+        target="_blank"
+        >
+        WhatsApp
+        </a>
+
+        `;
+
+    }
+
+
+    /* GOOGLE MAPS */
+
+    if(
+        Array.isArray(a.coords) &&
+        a.coords.length === 2
+    ){
+
+        popup += `
+
+        <a
+        class="popup-link maps"
+        href="https://www.google.com/maps?q=${a.coords[0]},${a.coords[1]}"
+        target="_blank"
+        >
+        Cómo llegar
+        </a>
+
+        `;
+
+    }
+
+
+    return popup;
 
 }
 
@@ -553,107 +1148,266 @@ return popup;
    MARCADORES
 ===================================================== */
 
+var markers = [];
+
+
 artesanos.forEach(a=>{
 
-/* No crear marcador si no hay coordenadas */
 
-if(!Array.isArray(a.coords) || a.coords.length !== 2){
-return;
-}
+    /* NO CREAR MARCADOR SIN COORDENADAS */
 
+    if(
+        !Array.isArray(a.coords) ||
+        a.coords.length !== 2
+    ){
 
-/* =====================================================
-   DANIELA COLLI
-===================================================== */
+        return;
 
-if(a.artesana === "Daniela Colli Huenchumilla"){
-
-let existente = markers.find(m =>
-m.coords[0] === a.coords[0] &&
-m.coords[1] === a.coords[1]
-);
+    }
 
 
-/* Si el marcador ya existe, guardar el segundo emprendimiento */
+    /* =================================================
+       DANIELA
+    ================================================= */
 
-if(existente){
+    if(
+        a.artesana ===
+        "Daniela Colli Huenchumilla"
+    ){
 
-existente.emprendimientos.push(a);
+        let existente =
+            markers.find(m =>
 
-return;
+                m.coords[0] === a.coords[0] &&
 
-}
+                m.coords[1] === a.coords[1]
 
-
-/* Crear menú inicial */
-
-let popup = `
-<div class="popup-title">
-📍 Daniela Colli
-</div>
-
-<div class="popup-subtitle">
-Selecciona un emprendimiento
-</div>
-
-<button type="button"
-class="popup-link maps"
-onclick="event.stopPropagation(); mostrarEmprendimiento(${JSON.stringify(a.coords)}, 0)">
-💍 Patranka Artesanal
-</button>
-
-<button type="button"
-class="popup-link instagram"
-onclick="event.stopPropagation(); mostrarEmprendimiento(${JSON.stringify(a.coords)}, 1)">
-🧶 Rayün Expresión Artística
-</button>
-`;
+            );
 
 
-/* Crear marcador */
+        /* =============================================
+           SI YA EXISTE EL PUNTO
+        ============================================= */
 
-let marker = L.marker(
-a.coords,
-{
-icon:icons[a.tipo] || icons.textil
-}
-)
-.addTo(map)
-.bindPopup(popup);
+        if(existente){
 
+            existente.emprendimientos.push(a);
 
-/* Guardar información */
+            return;
 
-marker.coords = a.coords;
-
-marker.emprendimientos = [a];
-
-markers.push(marker);
+        }
 
 
-}else{
+        /* =============================================
+           MENÚ DANIELA
+        ============================================= */
+
+        let popup = `
+
+        <div class="popup-title">
+        📍 Daniela Colli
+        </div>
+
+        <div class="popup-subtitle">
+        Selecciona un emprendimiento
+        </div>
 
 
-/* =====================================================
-   RESTO DE ARTESANOS
-===================================================== */
+        <button
+        type="button"
+        class="popup-link maps boton-patranka"
+        >
+        💍 Patranka Artesanal
+        </button>
 
-let marker = L.marker(
-a.coords,
-{
-icon:icons[a.tipo] || icons.textil
-}
-)
-.addTo(map)
-.bindPopup(crearPopup(a));
 
-marker.coords = a.coords;
+        <button
+        type="button"
+        class="popup-link instagram boton-rayun"
+        >
+        🧶 Rayün Expresión Artística
+        </button>
 
-marker.emprendimientos = [a];
+        `;
 
-markers.push(marker);
 
-}
+        /* =============================================
+           CREAR MARCADOR
+        ============================================= */
+
+        let marker = L.marker(
+
+            a.coords,
+
+            {
+
+                icon:icons.daniela
+
+            }
+
+        )
+
+        .addTo(map)
+
+        .bindPopup(popup);
+
+
+        /* =============================================
+           PROTEGER POPUP DANIELA
+        ============================================= */
+
+        marker.on(
+            'popupopen',
+            function(e){
+
+                let popupElement =
+                    e.popup.getElement();
+
+
+                if(!popupElement){
+
+                    return;
+
+                }
+
+
+                /*
+                Evita que Leaflet cierre
+                el popup al hacer clic dentro
+                */
+
+                L.DomEvent.disableClickPropagation(
+                    popupElement
+                );
+
+
+                /* PATRANKA */
+
+                let botonPatranka =
+                    popupElement.querySelector(
+                        ".boton-patranka"
+                    );
+
+
+                if(botonPatranka){
+
+                    botonPatranka.onclick =
+                        function(e){
+
+                            e.preventDefault();
+
+                            e.stopPropagation();
+
+                            mostrarEmprendimiento(
+                                a.coords,
+                                0
+                            );
+
+                        };
+
+                }
+
+
+                /* RAYÜN */
+
+                let botonRayun =
+                    popupElement.querySelector(
+                        ".boton-rayun"
+                    );
+
+
+                if(botonRayun){
+
+                    botonRayun.onclick =
+                        function(e){
+
+                            e.preventDefault();
+
+                            e.stopPropagation();
+
+                            mostrarEmprendimiento(
+                                a.coords,
+                                1
+                            );
+
+                        };
+
+                }
+
+            }
+        );
+
+
+        /* =============================================
+           GUARDAR DATOS
+        ============================================= */
+
+        marker.coords = a.coords;
+
+        marker.emprendimientos = [a];
+
+        markers.push(marker);
+
+
+    }
+
+    else{
+
+
+        /* =============================================
+           RESTO DE ARTESANOS
+        ============================================= */
+
+        let marker = L.marker(
+
+            a.coords,
+
+            {
+
+                icon:
+                    icons[a.tipo] ||
+                    icons.textil
+
+            }
+
+        )
+
+        .addTo(map)
+
+        .bindPopup(
+            crearPopup(a)
+        );
+
+
+        /* PROTEGER POPUP */
+
+        marker.on(
+            'popupopen',
+            function(e){
+
+                let popupElement =
+                    e.popup.getElement();
+
+
+                if(popupElement){
+
+                    L.DomEvent.disableClickPropagation(
+                        popupElement
+                    );
+
+                }
+
+            }
+        );
+
+
+        marker.coords = a.coords;
+
+        marker.emprendimientos = [a];
+
+        markers.push(marker);
+
+    }
 
 });
 
@@ -662,36 +1416,50 @@ markers.push(marker);
    GUARDAR EMPRENDIMIENTOS DE DANIELA
 ===================================================== */
 
-let danielaMarkers = markers.filter(m =>
+let danielaMarkers =
+    markers.filter(m =>
 
-m.emprendimientos &&
-m.emprendimientos.length > 0 &&
-m.emprendimientos[0].artesana === "Daniela Colli Huenchumilla"
+        m.emprendimientos &&
 
-);
+        m.emprendimientos.length > 0 &&
+
+        m.emprendimientos[0].artesana ===
+        "Daniela Colli Huenchumilla"
+
+    );
 
 
 if(danielaMarkers.length > 0){
 
-let emprendimientos = [];
+    let emprendimientos = [];
 
 
-artesanos.forEach(a=>{
+    artesanos.forEach(a=>{
 
-if(
-a.artesana === "Daniela Colli Huenchumilla" &&
-Array.isArray(a.coords) &&
-a.coords.length === 2
-){
+        if(
 
-emprendimientos.push(a);
+            a.artesana ===
+            "Daniela Colli Huenchumilla"
 
-}
+            &&
 
-});
+            Array.isArray(a.coords)
+
+            &&
+
+            a.coords.length === 2
+
+        ){
+
+            emprendimientos.push(a);
+
+        }
+
+    });
 
 
-danielaMarkers[0].emprendimientos = emprendimientos;
+    danielaMarkers[0].emprendimientos =
+        emprendimientos;
 
 }
 
@@ -700,125 +1468,300 @@ danielaMarkers[0].emprendimientos = emprendimientos;
    MOSTRAR EMPRENDIMIENTO
 ===================================================== */
 
-function mostrarEmprendimiento(coords, indice){
+function mostrarEmprendimiento(
+    coords,
+    indice
+){
 
-let datos = artesanos.filter(a =>
+    let datos =
+        artesanos.filter(a =>
 
-a.artesana === "Daniela Colli Huenchumilla" &&
+            a.artesana ===
+            "Daniela Colli Huenchumilla"
 
-a.coords[0] === coords[0] &&
+            &&
 
-a.coords[1] === coords[1]
+            Array.isArray(a.coords)
 
-);
+            &&
 
+            a.coords.length === 2
 
-if(!datos[indice]){
-return;
-}
+            &&
 
+            a.coords[0] === coords[0]
 
-let marker = markers.find(m =>
+            &&
 
-m.coords[0] === coords[0] &&
+            a.coords[1] === coords[1]
 
-m.coords[1] === coords[1]
-
-);
-
-
-if(!marker){
-return;
-}
+        );
 
 
-/* Crear ficha */
+    if(!datos[indice]){
 
-let popup = crearPopup(datos[indice]);
+        return;
 
-
-/* Botón para volver a elegir */
-
-popup += `
-
-<br>
-
-<button type="button"
-class="popup-link maps"
-onclick="event.stopPropagation(); mostrarOpcionesDaniela(${JSON.stringify(coords)})">
-
-🔙 Ver los otros emprendimientos
-
-</button>
-
-`;
+    }
 
 
-/* Actualizar popup sin cerrar */
+    let marker =
+        markers.find(m =>
 
-marker.setPopupContent(popup);
+            m.coords[0] === coords[0]
 
-marker.openPopup();
+            &&
+
+            m.coords[1] === coords[1]
+
+        );
+
+
+    if(!marker){
+
+        return;
+
+    }
+
+
+    /* CREAR FICHA */
+
+    let popup =
+        crearPopup(
+            datos[indice]
+        );
+
+
+    /* BOTÓN VOLVER */
+
+    popup += `
+
+    <br>
+
+    <button
+    type="button"
+    class="popup-link maps boton-volver"
+    >
+
+    🔙 Ver los otros emprendimientos
+
+    </button>
+
+    `;
+
+
+    /* CAMBIAR CONTENIDO */
+
+    marker.setPopupContent(popup);
+
+    marker.openPopup();
+
+
+    /* ESPERAR A QUE LEAFLET RENDERICE */
+
+    setTimeout(
+        function(){
+
+            let popupElement =
+                marker.getPopup().getElement();
+
+
+            if(!popupElement){
+
+                return;
+
+            }
+
+
+            /* PROTEGER POPUP */
+
+            L.DomEvent.disableClickPropagation(
+                popupElement
+            );
+
+
+            /* BOTÓN VOLVER */
+
+            let botonVolver =
+                popupElement.querySelector(
+                    ".boton-volver"
+                );
+
+
+            if(botonVolver){
+
+                botonVolver.onclick =
+                    function(e){
+
+                        e.preventDefault();
+
+                        e.stopPropagation();
+
+                        mostrarOpcionesDaniela(
+                            coords
+                        );
+
+                    };
+
+            }
+
+        },
+        50
+    );
 
 }
 
 
 /* =====================================================
-   MOSTRAR OPCIONES DE DANIELA
+   MOSTRAR OPCIONES DANIELA
 ===================================================== */
 
-function mostrarOpcionesDaniela(coords){
+function mostrarOpcionesDaniela(
+    coords
+){
 
-let popup = `
+    let popup = `
 
-<div class="popup-title">
-📍 Daniela Colli
-</div>
+    <div class="popup-title">
+    📍 Daniela Colli
+    </div>
 
-<div class="popup-subtitle">
-Selecciona un emprendimiento
-</div>
-
-
-<button type="button"
-class="popup-link maps"
-onclick="event.stopPropagation(); mostrarEmprendimiento(${JSON.stringify(coords)}, 0)">
-
-💍 Patranka Artesanal
-
-</button>
+    <div class="popup-subtitle">
+    Selecciona un emprendimiento
+    </div>
 
 
-<button type="button"
-class="popup-link instagram"
-onclick="event.stopPropagation(); mostrarEmprendimiento(${JSON.stringify(coords)}, 1)">
+    <button
+    type="button"
+    class="popup-link maps boton-patranka"
+    >
 
-🧶 Rayün Expresión Artística
+    💍 Patranka Artesanal
 
-</button>
-
-`;
-
-
-let marker = markers.find(m =>
-
-m.coords[0] === coords[0] &&
-
-m.coords[1] === coords[1]
-
-);
+    </button>
 
 
-if(!marker){
-return;
-}
+    <button
+    type="button"
+    class="popup-link instagram boton-rayun"
+    >
+
+    🧶 Rayün Expresión Artística
+
+    </button>
+
+    `;
 
 
-/* Cambiar contenido manteniendo el mismo popup */
+    let marker =
+        markers.find(m =>
 
-marker.setPopupContent(popup);
+            m.coords[0] === coords[0]
 
-marker.openPopup();
+            &&
+
+            m.coords[1] === coords[1]
+
+        );
+
+
+    if(!marker){
+
+        return;
+
+    }
+
+
+    /* CAMBIAR CONTENIDO */
+
+    marker.setPopupContent(popup);
+
+    marker.openPopup();
+
+
+    /* CONFIGURAR BOTONES */
+
+    setTimeout(
+        function(){
+
+            let popupElement =
+                marker.getPopup().getElement();
+
+
+            if(!popupElement){
+
+                return;
+
+            }
+
+
+            /* PROTEGER POPUP */
+
+            L.DomEvent.disableClickPropagation(
+                popupElement
+            );
+
+
+            /* =========================================
+               PATRANKA
+            ========================================= */
+
+            let botonPatranka =
+                popupElement.querySelector(
+                    ".boton-patranka"
+                );
+
+
+            if(botonPatranka){
+
+                botonPatranka.onclick =
+                    function(e){
+
+                        e.preventDefault();
+
+                        e.stopPropagation();
+
+                        mostrarEmprendimiento(
+                            coords,
+                            0
+                        );
+
+                    };
+
+            }
+
+
+            /* =========================================
+               RAYÜN
+            ========================================= */
+
+            let botonRayun =
+                popupElement.querySelector(
+                    ".boton-rayun"
+                );
+
+
+            if(botonRayun){
+
+                botonRayun.onclick =
+                    function(e){
+
+                        e.preventDefault();
+
+                        e.stopPropagation();
+
+                        mostrarEmprendimiento(
+                            coords,
+                            1
+                        );
+
+                    };
+
+            }
+
+        },
+        50
+    );
 
 }
 
@@ -829,9 +1772,12 @@ marker.openPopup();
 
 if(markers.length > 0){
 
-var group = L.featureGroup(markers);
+    var group =
+        L.featureGroup(markers);
 
-map.fitBounds(group.getBounds());
+    map.fitBounds(
+        group.getBounds()
+    );
 
 }
 
