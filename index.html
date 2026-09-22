@@ -373,6 +373,25 @@ header span{
     cursor:pointer;
 }
 @media(max-width:800px){
+    .leaflet-popup-content-wrapper{
+        max-width:calc(100vw - 30px);
+    }
+    .leaflet-popup-content{
+        width:auto !important;
+        max-width:calc(100vw - 70px);
+        margin:14px;
+        font-size:15px;
+    }
+    .popup-title{
+        font-size:21px;
+    }
+    .popup-subtitle{
+        font-size:15px;
+    }
+    .popup-img{
+        width:95px;
+        height:95px;
+    }
     header{
         display:flex;
         flex-direction:column;
