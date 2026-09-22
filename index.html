@@ -500,6 +500,24 @@ header span{
         padding:7px 10px;
         font-size:14px;
     }
+    .leyenda-iconos{
+        left:8px;
+        bottom:10px;
+        width:205px;
+        padding:8px 10px;
+    }
+    .leyenda-titulo{
+        font-size:14px;
+    }
+    .leyenda-item{
+        font-size:12px;
+        margin:4px 0;
+    }
+    .leyenda-item img,
+    .leyenda-daniela{
+        width:24px;
+        height:24px;
+    }
     #directorio-panel{
         left:10px;
         right:10px;
@@ -538,6 +556,18 @@ header span{
 </div>
 
 <div id="map"></div>
+
+<div class="leyenda-iconos">
+    <div class="leyenda-titulo">¿Qué significan los íconos?</div>
+    <div class="leyenda-item"><img src="ICONOS RUBRO/icono_textil.png"> Textil</div>
+    <div class="leyenda-item"><img src="ICONOS RUBRO/icono_madera.png"> Madera</div>
+    <div class="leyenda-item"><img src="ICONOS RUBRO/icono_suculentas.png"> Suculentas y cactus</div>
+    <div class="leyenda-item"><img src="ICONOS RUBRO/icono_artesania_en_cacho.png"> Artesanía en cacho</div>
+    <div class="leyenda-item"><img src="ICONOS RUBRO/icono_cuero.png"> Cuero</div>
+    <div class="leyenda-item"><img src="ICONOS RUBRO/icono_cesteria.png"> Cestería</div>
+    <div class="leyenda-item"><span class="leyenda-daniela"></span> Punto con dos emprendimientos de Daniela Colli</div>
+</div>
+
 <div id="directorio-panel"></div>
 
 
@@ -1132,7 +1162,7 @@ tipo:"textil",
 
 coords:[-38.678374,-72.424235],
 
-descripcion:"Artesanía en vellón, productos hechos con telar mapuche y productos pintados a mano a pedido",
+descripcion:"Artesanía en vellón, productos hechos con telar mapuche y productos pintados a mano",
 
 pago:"Transbank / Transferencia / Efectivo",
 
@@ -1485,10 +1515,12 @@ if(danielaMarker){
         Selecciona un emprendimiento
         </div>
         <button type="button" class="popup-link maps boton-patranka">
-        💍 Patranka Artesanal
+            <img class="boton-emprendimiento-icono" src="ICONOS RUBRO/icono_platería_mapuche_.png">
+            Patranka Artesanal
         </button>
         <button type="button" class="popup-link instagram boton-rayun">
-        🧶 Rayün Expresión Artística
+            <img class="boton-emprendimiento-icono" src="ICONOS RUBRO/icono_acrilico.png">
+            Rayün Expresión Artística
         </button>
     `);
 
@@ -1741,19 +1773,16 @@ function mostrarOpcionesDaniela(
     type="button"
     class="popup-link maps boton-patranka"
     >
-
-    💍 Patranka Artesanal
-
+        <img class="boton-emprendimiento-icono" src="ICONOS RUBRO/icono_platería_mapuche_.png">
+        Patranka Artesanal
     </button>
-
 
     <button
     type="button"
     class="popup-link instagram boton-rayun"
     >
-
-    🧶 Rayün Expresión Artística
-
+        <img class="boton-emprendimiento-icono" src="ICONOS RUBRO/icono_acrilico.png">
+        Rayün Expresión Artística
     </button>
 
     `;
