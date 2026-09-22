@@ -283,15 +283,15 @@ header{
 
 .daniela-iconos img{
 
-    width:18px;
+    width:20px;
 
-    height:18px;
+    height:20px;
 
-    object-fit:contain;
+    object-fit:cover;
 
-    border:none;
+    border:2px solid white;
 
-    border-radius:0;
+    border-radius:50%;
 
 }
 
@@ -1177,11 +1177,10 @@ artesanos.forEach(function(a){
         return;
     }
 
-    /* DANIELA: UN SOLO MARCADOR PARA SUS DOS EMPRENDIMIENTOS */
     if(a.artesana === "Daniela Colli Huenchumilla"){
 
         if(!danielaMarker){
-            danielaMarker = L.marker(a.coords, { icon:icons.daniela }).addTo(map);
+            danielaMarker = L.marker(a.coords,{icon:icons.daniela}).addTo(map);
             danielaMarker.coords = a.coords;
             danielaMarker.emprendimientos = [a];
             markers.push(danielaMarker);
@@ -1191,419 +1190,97 @@ artesanos.forEach(function(a){
         return;
     }
 
-    var marker = L.marker(a.coords, { icon:icons[a.tipo] || icons.textil }).addTo(map);
+    var marker = L.marker(a.coords,{icon:icons[a.tipo] || icons.textil}).addTo(map);
     marker.coords = a.coords;
     marker.emprendimientos = [a];
     marker.bindPopup(crearPopup(a));
-    marker.on('popupopen', function(e){
+
+    marker.on("popupopen",function(e){
         var popupElement = e.popup.getElement();
         if(popupElement){
             L.DomEvent.disableClickPropagation(popupElement);
         }
     });
+
     markers.push(marker);
 });
 
-/* =====================================================
-   POPUP INICIAL DE DANIELA
-===================================================== */
+function menuDaniela(){
+
+    if(!danielaMarker){ return; }
+
+    var popup = [
+        '<div class="popup-title">📍 Daniela Colli</div>',
+        '<div class="popup-subtitle">Selecciona un emprendimiento</div>',
+        '<button type="button" class="popup-link maps boton-patranka">💍 Patranka Artesanal</button>',
+        '<button type="button" class="popup-link instagram boton-rayun">🧶 Rayün Expresión Artística</button>'
+    ].join("");
+
+    danielaMarker.setPopupContent(popup);
+    danielaMarker.openPopup();
+
+    setTimeout(function(){
+        var el = danielaMarker.getPopup().getElement();
+        if(!el){ return; }
+        L.DomEvent.disableClickPropagation(el);
+
+        var p = el.querySelector(".boton-patranka");
+        var r = el.querySelector(".boton-rayun");
+
+        if(p){
+            p.onclick=function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                mostrarEmprendimiento(0);
+            };
+        }
+
+        if(r){
+            r.onclick=function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                mostrarEmprendimiento(1);
+            };
+        }
+    },100);
+}
 
 if(danielaMarker){
-
-    danielaMarker.bindPopup(`
-        <div class="popup-title">
-        📍 Daniela Colli
-        </div>
-        <div class="popup-subtitle">
-        Selecciona un emprendimiento
-        </div>
-        <button type="button" class="popup-link maps boton-patranka">
-        💍 Patranka Artesanal
-        </button>
-        <button type="button" class="popup-link instagram boton-rayun">
-        🧶 Rayün Expresión Artística
-        </button>
-    `);
-
-    danielaMarker.on('popupopen', function(e){
-        var popupElement = e.popup.getElement();
-        if(!popupElement){ return; }
-        L.DomEvent.disableClickPropagation(popupElement);
-
-        var botonPatranka = popupElement.querySelector(".boton-patranka");
-        var botonRayun = popupElement.querySelector(".boton-rayun");
-
-        if(botonPatranka){
-            botonPatranka.onclick = function(e){
-                e.preventDefault();
-                e.stopPropagation();
-                mostrarEmprendimiento(danielaMarker.coords, 0);
-            };
-        }
-
-        if(botonRayun){
-            botonRayun.onclick = function(e){
-                e.preventDefault();
-                e.stopPropagation();
-                mostrarEmprendimiento(danielaMarker.coords, 1);
-            };
-        }
+    danielaMarker.on("click",function(e){
+        L.DomEvent.stopPropagation(e);
+        menuDaniela();
     });
 }
 
-/* =====================================================
-   GUARDAR EMPRENDIMIENTOS DE DANIELA
-===================================================== */
+function mostrarEmprendimiento(indice){
 
-let danielaMarkers =
-    markers.filter(m =>
+    if(!danielaMarker){ return; }
 
-        m.emprendimientos &&
+    var a = danielaMarker.emprendimientos[indice];
+    if(!a){ return; }
 
-        m.emprendimientos.length > 0 &&
+    var popup = crearPopup(a);
 
-        m.emprendimientos[0].artesana ===
-        "Daniela Colli Huenchumilla"
+    popup += '<br><button type="button" class="popup-link maps boton-volver">🔙 Ver los otros emprendimientos</button>';
 
-    );
+    danielaMarker.setPopupContent(popup);
+    danielaMarker.openPopup();
 
+    setTimeout(function(){
+        var el = danielaMarker.getPopup().getElement();
+        if(!el){ return; }
+        L.DomEvent.disableClickPropagation(el);
 
-if(danielaMarkers.length > 0){
-
-    let emprendimientos = [];
-
-
-    artesanos.forEach(a=>{
-
-        if(
-
-            a.artesana ===
-            "Daniela Colli Huenchumilla"
-
-            &&
-
-            Array.isArray(a.coords)
-
-            &&
-
-            a.coords.length === 2
-
-        ){
-
-            emprendimientos.push(a);
-
+        var volver = el.querySelector(".boton-volver");
+        if(volver){
+            volver.onclick=function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                menuDaniela();
+            };
         }
-
-    });
-
-
-    danielaMarkers[0].emprendimientos =
-        emprendimientos;
-
+    },100);
 }
-
-
-/* =====================================================
-   MOSTRAR EMPRENDIMIENTO
-===================================================== */
-
-function mostrarEmprendimiento(
-    coords,
-    indice
-){
-
-    let datos =
-        artesanos.filter(a =>
-
-            a.artesana ===
-            "Daniela Colli Huenchumilla"
-
-            &&
-
-            Array.isArray(a.coords)
-
-            &&
-
-            a.coords.length === 2
-
-            &&
-
-            a.coords[0] === coords[0]
-
-            &&
-
-            a.coords[1] === coords[1]
-
-        );
-
-
-    if(!datos[indice]){
-
-        return;
-
-    }
-
-
-    let marker =
-        markers.find(m =>
-
-            m.coords[0] === coords[0]
-
-            &&
-
-            m.coords[1] === coords[1]
-
-        );
-
-
-    if(!marker){
-
-        return;
-
-    }
-
-
-    /* CREAR FICHA */
-
-    let popup =
-        crearPopup(
-            datos[indice]
-        );
-
-
-    /* BOTÓN VOLVER */
-
-    popup += `
-
-    <br>
-
-    <button
-    type="button"
-    class="popup-link maps boton-volver"
-    >
-
-    🔙 Ver los otros emprendimientos
-
-    </button>
-
-    `;
-
-
-    /* CAMBIAR CONTENIDO */
-
-    marker.setPopupContent(popup);
-
-    marker.openPopup();
-
-
-    /* ESPERAR A QUE LEAFLET RENDERICE */
-
-    setTimeout(
-        function(){
-
-            let popupElement =
-                marker.getPopup().getElement();
-
-
-            if(!popupElement){
-
-                return;
-
-            }
-
-
-            /* PROTEGER POPUP */
-
-            L.DomEvent.disableClickPropagation(
-                popupElement
-            );
-
-
-            /* BOTÓN VOLVER */
-
-            let botonVolver =
-                popupElement.querySelector(
-                    ".boton-volver"
-                );
-
-
-            if(botonVolver){
-
-                botonVolver.onclick =
-                    function(e){
-
-                        e.preventDefault();
-
-                        e.stopPropagation();
-
-                        mostrarOpcionesDaniela(
-                            coords
-                        );
-
-                    };
-
-            }
-
-        },
-        50
-    );
-
-}
-
-
-/* =====================================================
-   MOSTRAR OPCIONES DANIELA
-===================================================== */
-
-function mostrarOpcionesDaniela(
-    coords
-){
-
-    let popup = `
-
-    <div class="popup-title">
-    📍 Daniela Colli
-    </div>
-
-    <div class="popup-subtitle">
-    Selecciona un emprendimiento
-    </div>
-
-
-    <button
-    type="button"
-    class="popup-link maps boton-patranka"
-    >
-
-    💍 Patranka Artesanal
-
-    </button>
-
-
-    <button
-    type="button"
-    class="popup-link instagram boton-rayun"
-    >
-
-    🧶 Rayün Expresión Artística
-
-    </button>
-
-    `;
-
-
-    let marker =
-        markers.find(m =>
-
-            m.coords[0] === coords[0]
-
-            &&
-
-            m.coords[1] === coords[1]
-
-        );
-
-
-    if(!marker){
-
-        return;
-
-    }
-
-
-    /* CAMBIAR CONTENIDO */
-
-    marker.setPopupContent(popup);
-
-    marker.openPopup();
-
-
-    /* CONFIGURAR BOTONES */
-
-    setTimeout(
-        function(){
-
-            let popupElement =
-                marker.getPopup().getElement();
-
-
-            if(!popupElement){
-
-                return;
-
-            }
-
-
-            /* PROTEGER POPUP */
-
-            L.DomEvent.disableClickPropagation(
-                popupElement
-            );
-
-
-            /* =========================================
-               PATRANKA
-            ========================================= */
-
-            let botonPatranka =
-                popupElement.querySelector(
-                    ".boton-patranka"
-                );
-
-
-            if(botonPatranka){
-
-                botonPatranka.onclick =
-                    function(e){
-
-                        e.preventDefault();
-
-                        e.stopPropagation();
-
-                        mostrarEmprendimiento(
-                            coords,
-                            0
-                        );
-
-                    };
-
-            }
-
-
-            /* =========================================
-               RAYÜN
-            ========================================= */
-
-            let botonRayun =
-                popupElement.querySelector(
-                    ".boton-rayun"
-                );
-
-
-            if(botonRayun){
-
-                botonRayun.onclick =
-                    function(e){
-
-                        e.preventDefault();
-
-                        e.stopPropagation();
-
-                        mostrarEmprendimiento(
-                            coords,
-                            1
-                        );
-
-                    };
-
-            }
-
-        },
-        50
-    );
-
-}
-
 
 /* =====================================================
    AJUSTAR MAPA
