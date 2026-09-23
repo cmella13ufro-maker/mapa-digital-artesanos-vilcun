@@ -143,16 +143,18 @@ function galeriaSiguiente(){if(galeriaFotos.length){galeriaIndice=(galeriaIndice
 function cerrarGaleria(){var overlay=document.getElementById('galeria-overlay');if(overlay)overlay.remove();}
 
 var markers=[],danielaMarker=null;
-function controlarZoomAlAbrirPopup(e){map.touchZoom.disable();var p=e.popup.getElement();if(p){L.DomEvent.disableClickPropagation(p);L.DomEvent.disableScrollPropagation(p);}}
-function controlarZoomAlCerrarPopup(){map.touchZoom.enable();}
+function ocultarSimbologia(){var s=document.getElementById('simbologia');if(s)s.style.display='none';}
+function mostrarSimbologia(){var s=document.getElementById('simbologia');if(s)s.style.display='block';}
+function controlarZoomAlAbrirPopup(e){ocultarSimbologia();map.touchZoom.disable();var p=e.popup.getElement();if(p){L.DomEvent.disableClickPropagation(p);L.DomEvent.disableScrollPropagation(p);}}
+function controlarZoomAlCerrarPopup(){map.touchZoom.enable();mostrarSimbologia();}
 artesanos.forEach(function(a){
 if(!Array.isArray(a.coords)||a.coords.length!==2)return;
 if(a.artesana==="Daniela Colli Huenchumilla"){
-if(!danielaMarker){danielaMarker=L.marker(a.coords,{icon:icons.daniela}).addTo(map);danielaMarker.coords=a.coords;danielaMarker.emprendimientos=[a];markers.push(danielaMarker);}
+if(!danielaMarker){danielaMarker=L.marker(a.coords,{icon:icons.daniela}).addTo(map);danielaMarker.on('click',ocultarSimbologia);danielaMarker.coords=a.coords;danielaMarker.emprendimientos=[a];markers.push(danielaMarker);}
 else danielaMarker.emprendimientos.push(a);
 return;
 }
-var marker=L.marker(a.coords,{icon:icons[a.tipo]||icons.textil}).addTo(map);marker.coords=a.coords;marker.emprendimientos=[a];marker.bindPopup(crearPopup(a));marker.on('popupopen',function(e){controlarZoomAlAbrirPopup(e);});
+var marker=L.marker(a.coords,{icon:icons[a.tipo]||icons.textil}).addTo(map);marker.coords=a.coords;marker.emprendimientos=[a];marker.bindPopup(crearPopup(a));marker.on('click',ocultarSimbologia);marker.on('popupopen',function(e){controlarZoomAlAbrirPopup(e);});
 marker.on('popupclose',controlarZoomAlCerrarPopup);markers.push(marker);
 });
 
