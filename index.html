@@ -47,7 +47,7 @@ header span{display:block;width:100%;}
 .directorio-ver{flex:none;background:#6b4f3b;color:white;border:none;border-radius:7px;padding:6px 9px;cursor:pointer;font-family:'Times New Roman',serif;}
 
 #simbologia{position:absolute;left:18px;bottom:18px;z-index:1000;width:280px;max-width:calc(100vw - 36px);background:#fffdf8;border:2px solid #6b4f3b;border-radius:10px;box-shadow:0 3px 10px rgba(0,0,0,.3);padding:10px 12px;box-sizing:border-box;}
-.simbologia-titulo{font-weight:bold;color:#6b4f3b;font-size:17px;margin-bottom:7px;text-align:center;}
+.simbologia-oculta{display:none !important;}.simbologia-titulo{font-weight:bold;color:#6b4f3b;font-size:17px;margin-bottom:7px;text-align:center;}
 .simbologia-item{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:14px;color:#333;}
 .simbologia-item img{width:25px;height:25px;object-fit:cover;border-radius:50%;border:1px solid #d6c2a8;flex:none;}
 
@@ -143,8 +143,8 @@ function galeriaSiguiente(){if(galeriaFotos.length){galeriaIndice=(galeriaIndice
 function cerrarGaleria(){var overlay=document.getElementById('galeria-overlay');if(overlay)overlay.remove();}
 
 var markers=[],danielaMarker=null;
-function ocultarSimbologia(){var s=document.getElementById('simbologia');if(s)s.style.display='none';}
-function mostrarSimbologia(){var s=document.getElementById('simbologia');if(s)s.style.display='block';}
+function ocultarSimbologia(){var s=document.getElementById('simbologia');if(s)s.classList.add('simbologia-oculta');}
+function mostrarSimbologia(){var s=document.getElementById('simbologia');if(s)s.classList.remove('simbologia-oculta');}
 function controlarZoomAlAbrirPopup(e){ocultarSimbologia();map.touchZoom.disable();var p=e.popup.getElement();if(p){L.DomEvent.disableClickPropagation(p);L.DomEvent.disableScrollPropagation(p);}}
 function controlarZoomAlCerrarPopup(){map.touchZoom.enable();mostrarSimbologia();}
 artesanos.forEach(function(a){
