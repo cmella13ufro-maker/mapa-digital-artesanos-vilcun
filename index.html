@@ -2,7 +2,8 @@
 <html lang="es">
 
 <head>
-<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 <title>Mapa Georreferenciado de Artesanos de Vilcún</title>
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
@@ -16,7 +17,8 @@ header span{display:block;width:100%;}
 .leaflet-popup-content-wrapper{border-radius:15px;border:3px solid #6b4f3b;background:#fffdf8;width:620px;max-width:calc(100vw - 40px);}
 .leaflet-popup-content{width:580px !important;max-width:calc(100vw - 80px);margin:14px;font-family:Arial,sans-serif;font-size:16px;line-height:1.35;}
 .popup-title{font-family:Arial,sans-serif;font-size:20px;font-weight:bold;color:#6b4f3b;}
-.popup-subtitle{font-family:Arial,sans-serif;font-size:16px;color:#555;font-style:italic;margin-bottom:8px;}.popup-descripcion{text-align:justify !important;text-justify:inter-word;}\n.leaflet-popup-content-wrapper,.leaflet-popup-content{touch-action:pinch-zoom;}
+.popup-subtitle{font-family:Arial,sans-serif;font-size:16px;color:#555;font-style:italic;margin-bottom:8px;}.popup-descripcion{text-align:justify !important;text-justify:inter-word;}
+.leaflet-popup-content-wrapper,.leaflet-popup-content{touch-action:pinch-zoom;}
 .popup-img{width:72px;height:72px;object-fit:cover;border-radius:10px;margin:3px;border:2px solid #d6c2a8;cursor:pointer;transition:transform .15s;}
 .popup-img:hover{transform:scale(1.03);}
 .galeria-overlay{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;}
@@ -55,7 +57,8 @@ header span{display:block;width:100%;}
 #simbologia{left:8px;bottom:8px;width:250px;padding:8px 10px;}
 .simbologia-titulo{font-size:15px}.simbologia-item{font-size:12px;margin:4px 0}.simbologia-item img{width:22px;height:22px;}
 .leaflet-popup-content-wrapper{width:94vw;max-width:94vw;box-sizing:border-box;}
-.leaflet-popup-content-wrapper{max-height:calc(100vh - 145px);overflow:hidden;}\n.leaflet-popup-content{width:auto !important;max-width:none;margin:12px;font-family:Arial,sans-serif;font-size:19px;line-height:1.42;max-height:calc(100vh - 175px);overflow-y:auto;overflow-x:hidden;touch-action:pan-y;}
+.leaflet-popup-content-wrapper{max-height:calc(100vh - 145px);overflow:hidden;}
+.leaflet-popup-content{width:auto !important;max-width:none;margin:12px;font-family:Arial,sans-serif;font-size:19px;line-height:1.42;max-height:calc(100vh - 175px);overflow-y:auto;overflow-x:hidden;touch-action:pan-y;}
 .popup-title{font-size:23px;line-height:1.15;overflow-wrap:anywhere}.popup-subtitle{font-size:19px}.popup-img{width:82px;height:82px;}
 .popup-link{font-size:15px;padding:7px;}
 .galeria-overlay{padding:10px}.galeria-overlay img{max-width:94vw;max-height:82vh;}
@@ -146,7 +149,9 @@ var markers=[],danielaMarker=null;
 function ocultarSimbologia(){var s=document.getElementById('simbologia');if(s)s.classList.add('simbologia-oculta');}
 function mostrarSimbologia(){var s=document.getElementById('simbologia');if(s)s.classList.remove('simbologia-oculta');}
 function controlarZoomAlAbrirPopup(e){ocultarSimbologia();map.touchZoom.disable();var z=document.querySelector(".leaflet-control-zoom");if(z)z.style.display="none";var p=e.popup.getElement();if(p){L.DomEvent.disableClickPropagation(p);L.DomEvent.disableScrollPropagation(p);}}
-function controlarZoomAlCerrarPopup(){map.touchZoom.enable();var z=document.querySelector(".leaflet-control-zoom");if(z)z.style.display="";mostrarSimbologia();}\nmap.on("popupopen",controlarZoomAlAbrirPopup);\nmap.on("popupclose",controlarZoomAlCerrarPopup);
+function controlarZoomAlCerrarPopup(){map.touchZoom.enable();var z=document.querySelector(".leaflet-control-zoom");if(z)z.style.display="";mostrarSimbologia();}
+map.on("popupopen",controlarZoomAlAbrirPopup);
+map.on("popupclose",controlarZoomAlCerrarPopup);
 artesanos.forEach(function(a){
 if(!Array.isArray(a.coords)||a.coords.length!==2)return;
 if(a.artesana==="Daniela Colli Huenchumilla"){
