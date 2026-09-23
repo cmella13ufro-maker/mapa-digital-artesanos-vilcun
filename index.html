@@ -189,6 +189,7 @@ setTimeout(function(){let p=marker.getPopup().getElement();if(!p)return;L.DomEve
 
 function abrirPerfilDesdeDirectorio(indice){
 var a=artesanos[indice];if(!a)return;
+ocultarSimbologia();
 var panel=document.getElementById('directorio-panel');if(panel)panel.style.display='none';
 if(a.artesana==="Daniela Colli Huenchumilla"&&Array.isArray(a.coords)&&a.coords.length===2){map.setView(a.coords,Math.max(map.getZoom(),14));mostrarOpcionesDaniela(a.coords);return;}
 if(Array.isArray(a.coords)&&a.coords.length===2){map.setView(a.coords,Math.max(map.getZoom(),14));var marker=markers.find(function(m){return m.coords&&m.coords[0]===a.coords[0]&&m.coords[1]===a.coords[1];});if(marker)marker.openPopup();return;}
