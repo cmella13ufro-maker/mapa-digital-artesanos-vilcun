@@ -16,7 +16,7 @@ header span{display:block;width:100%;}
 .leaflet-popup-content-wrapper{border-radius:15px;border:3px solid #6b4f3b;background:#fffdf8;width:520px;max-width:calc(100vw - 30px);}
 .leaflet-popup-content{width:440px !important;max-width:calc(100vw - 70px);margin:15px;font-family:Arial,sans-serif;font-size:16px;line-height:1.4;}
 .popup-title{font-family:Arial,sans-serif;font-size:20px;font-weight:bold;color:#6b4f3b;}
-.popup-subtitle{font-family:Arial,sans-serif;font-size:16px;color:#555;font-style:italic;margin-bottom:8px;}
+.popup-subtitle{font-family:Arial,sans-serif;font-size:16px;color:#555;font-style:italic;margin-bottom:8px;}.popup-descripcion{text-align:justify;}
 .popup-img{width:82px;height:82px;object-fit:cover;border-radius:10px;margin:3px;border:2px solid #d6c2a8;cursor:pointer;transition:transform .15s;}
 .popup-img:hover{transform:scale(1.03);}
 .galeria-overlay{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;}
@@ -125,7 +125,7 @@ var artesanos=[
 ];
 
 function crearPopup(a){
-let popup='<div class="popup-title">'+a.nombre+'</div><div class="popup-subtitle">'+(a.artesana||a.artesano||"")+'</div><div><b>Descripción:</b><br>'+a.descripcion+'</div><div><b>Pago:</b><br>'+a.pago+'</div>';
+let popup='<div class="popup-title">'+a.nombre+'</div><div class="popup-subtitle">'+(a.artesana||a.artesano||"")+'</div><div class="popup-descripcion"><b>Descripción:</b><br>'+a.descripcion+'</div><div><b>Pago:</b><br>'+a.pago+'</div>';
 if(a.imagenes&&a.imagenes.length>0)a.imagenes.forEach(img=>{popup+='<img src="'+img+'" class="popup-img" onclick="abrirGaleria(this.src, Array.from(this.closest(\'.leaflet-popup-content\').querySelectorAll(\'.popup-img\')).map(function(x){return x.getAttribute(\'src\');}))">';});
 if(a.instagram)popup+='<a class="popup-link instagram" href="'+a.instagram+'" target="_blank">Instagram</a>';
 if(a.facebook)popup+='<a class="popup-link facebook" href="'+a.facebook+'" target="_blank">Facebook</a>';
