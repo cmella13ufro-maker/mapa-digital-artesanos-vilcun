@@ -196,7 +196,7 @@ function abrirPerfilDesdeDirectorio(indice){
 var a=artesanos[indice];if(!a)return;
 ocultarSimbologia();
 var panel=document.getElementById('directorio-panel');if(panel)panel.style.display='none';
-if(a.artesana==="Daniela Colli Huenchumilla"&&Array.isArray(a.coords)&&a.coords.length===2){map.setView(a.coords,Math.max(map.getZoom(),14));var indiceDaniela=a.nombre==="Rayün Expresión Artística"?1:0;var datosDaniela=artesanos.filter(function(x){return x.artesana==="Daniela Colli Huenchumilla";});var perfilDaniela=datosDaniela[indiceDaniela];if(perfilDaniela){L.popup({maxWidth:620,closeButton:true}).setLatLng(a.coords).setContent(crearPopup(perfilDaniela)).openOn(map);}return;}
+if((a.nombre==="Patranka Artesanal"||a.nombre==="Rayün Expresión Artística")&&Array.isArray(a.coords)&&a.coords.length===2){map.setView(a.coords,Math.max(map.getZoom(),14));L.popup({maxWidth:620,closeButton:true}).setLatLng(a.coords).setContent(crearPopup(a)).openOn(map);return;}
 if(Array.isArray(a.coords)&&a.coords.length===2){map.setView(a.coords,Math.max(map.getZoom(),14));var marker=markers.find(function(m){return m.coords&&m.coords[0]===a.coords[0]&&m.coords[1]===a.coords[1];});if(marker)marker.openPopup();return;}
 L.popup({maxWidth:520}).setLatLng(map.getCenter()).setContent(crearPopup(a)).openOn(map);
 }
