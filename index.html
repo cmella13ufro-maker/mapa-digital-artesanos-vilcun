@@ -167,8 +167,8 @@ danielaMarker.on('popupopen',function(e){
 controlarZoomAlAbrirPopup(e);
 var p=e.popup.getElement();if(!p)return;
 var bp=p.querySelector('.boton-patranka'),br=p.querySelector('.boton-rayun');
-if(bp)bp.onclick=function(e){e.preventDefault();e.stopPropagation();mostrarEmprendimiento(danielaMarker.coords,0);};
-if(br)br.onclick=function(e){e.preventDefault();e.stopPropagation();mostrarEmprendimiento(danielaMarker.coords,1);};
+if(bp)bp.onclick=function(e){L.DomEvent.stop(e);mostrarEmprendimiento(danielaMarker.coords,0);};
+if(br)br.onclick=function(e){L.DomEvent.stop(e);mostrarEmprendimiento(danielaMarker.coords,1);};
 });
 danielaMarker.on('popupclose',controlarZoomAlCerrarPopup);
 }
@@ -184,7 +184,7 @@ setTimeout(function(){let p=marker.getPopup().getElement();if(!p)return;L.DomEve
 function mostrarOpcionesDaniela(coords){
 let marker=markers.find(m=>m.coords[0]===coords[0]&&m.coords[1]===coords[1]);if(!marker)return;
 marker.setPopupContent(popupDaniela());marker.openPopup();
-setTimeout(function(){let p=marker.getPopup().getElement();if(!p)return;L.DomEvent.disableClickPropagation(p);let bp=p.querySelector('.boton-patranka'),br=p.querySelector('.boton-rayun');if(bp)bp.onclick=function(e){e.preventDefault();e.stopPropagation();mostrarEmprendimiento(coords,0);};if(br)br.onclick=function(e){e.preventDefault();e.stopPropagation();mostrarEmprendimiento(coords,1);};},50);
+setTimeout(function(){let p=marker.getPopup().getElement();if(!p)return;L.DomEvent.disableClickPropagation(p);let bp=p.querySelector('.boton-patranka'),br=p.querySelector('.boton-rayun');if(bp)bp.onclick=function(e){L.DomEvent.stop(e);mostrarEmprendimiento(coords,0);};if(br)br.onclick=function(e){L.DomEvent.stop(e);mostrarEmprendimiento(coords,1);};},50);
 }
 
 function abrirPerfilDesdeDirectorio(indice){
