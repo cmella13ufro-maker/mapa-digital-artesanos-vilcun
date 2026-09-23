@@ -142,6 +142,8 @@ function galeriaSiguiente(){if(galeriaFotos.length){galeriaIndice=(galeriaIndice
 function cerrarGaleria(){var overlay=document.getElementById('galeria-overlay');if(overlay)overlay.remove();}
 
 var markers=[],danielaMarker=null;
+function controlarZoomAlAbrirPopup(e){map.touchZoom.disable();var p=e.popup.getElement();if(p){L.DomEvent.disableClickPropagation(p);L.DomEvent.disableScrollPropagation(p);}}
+function controlarZoomAlCerrarPopup(){map.touchZoom.enable();}
 artesanos.forEach(function(a){
 if(!Array.isArray(a.coords)||a.coords.length!==2)return;
 if(a.artesana==="Daniela Colli Huenchumilla"){
@@ -149,7 +151,8 @@ if(!danielaMarker){danielaMarker=L.marker(a.coords,{icon:icons.daniela}).addTo(m
 else danielaMarker.emprendimientos.push(a);
 return;
 }
-var marker=L.marker(a.coords,{icon:icons[a.tipo]||icons.textil}).addTo(map);marker.coords=a.coords;marker.emprendimientos=[a];marker.bindPopup(crearPopup(a));marker.on('popupopen',function(e){controlarZoomAlAbrirPopup(e);});\nmarker.on('popupclose',controlarZoomAlCerrarPopup);markers.push(marker);
+var marker=L.marker(a.coords,{icon:icons[a.tipo]||icons.textil}).addTo(map);marker.coords=a.coords;marker.emprendimientos=[a];marker.bindPopup(crearPopup(a));marker.on('popupopen',function(e){controlarZoomAlAbrirPopup(e);});
+marker.on('popupclose',controlarZoomAlCerrarPopup);markers.push(marker);
 });
 
 function popupDaniela(){
@@ -158,11 +161,13 @@ return '<div class="popup-title">📍 Daniela Colli</div><div class="popup-subti
 if(danielaMarker){
 danielaMarker.bindPopup(popupDaniela());
 danielaMarker.on('popupopen',function(e){
-var p=e.popup.getElement();if(!p)return;L.DomEvent.disableClickPropagation(p);
+controlarZoomAlAbrirPopup(e);
+var p=e.popup.getElement();if(!p)return;
 var bp=p.querySelector('.boton-patranka'),br=p.querySelector('.boton-rayun');
 if(bp)bp.onclick=function(e){e.preventDefault();e.stopPropagation();mostrarEmprendimiento(danielaMarker.coords,0);};
 if(br)br.onclick=function(e){e.preventDefault();e.stopPropagation();mostrarEmprendimiento(danielaMarker.coords,1);};
 });
+danielaMarker.on('popupclose',controlarZoomAlCerrarPopup);
 }
 
 function mostrarEmprendimiento(coords,indice){
