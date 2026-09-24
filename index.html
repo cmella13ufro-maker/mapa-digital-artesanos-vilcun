@@ -179,7 +179,10 @@ danielaMarker.on('popupclose',controlarZoomAlCerrarPopup);
 }
 
 function mostrarEmprendimiento(coords,indice){
-let datos=artesanos.filter(a=>(a.nombre==="Patranka Artesanal"||a.nombre==="Rayün Expresión Artística")&&Array.isArray(a.coords)&&a.coords.length===2&&a.coords[0]===coords[0]&&a.coords[1]===coords[1]);
+let datos=[
+artesanos.find(a=>a.nombre==="Patranka Artesanal"&&Array.isArray(a.coords)&&a.coords[0]===coords[0]&&a.coords[1]===coords[1]),
+artesanos.find(a=>a.nombre==="Rayün Expresión Artística"&&Array.isArray(a.coords)&&a.coords[0]===coords[0]&&a.coords[1]===coords[1])
+];
 if(!datos[indice])return;
 let marker=markers.find(m=>m.coords[0]===coords[0]&&m.coords[1]===coords[1]);if(!marker)return;
 let popup=crearPopup(datos[indice])+'<br><button type="button" class="popup-link maps boton-volver">🔙 Ver los otros emprendimientos</button>';
