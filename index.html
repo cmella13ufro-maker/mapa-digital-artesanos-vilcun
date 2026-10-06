@@ -109,8 +109,8 @@ suculentas:L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><im
 cacho:L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS RUBRO/icono_artesania_en_cacho.png"></div></div>',iconSize:[60,60],iconAnchor:[30,60]})
 };
 icons.cuero=L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS RUBRO/icono_cuero.png"></div></div>',iconSize:[60,60],iconAnchor:[30,60]});
-icons.cuero=L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS RUBRO/icono_cuero.png"></div></div>',iconSize:[60,60],iconAnchor:[30,60]});
 icons.cesteria=L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS RUBRO/icono_cesteria.png"></div></div>',iconSize:[60,60],iconAnchor:[30,60]});
+icons.plateria=L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS RUBRO/icono_platería_mapuche_.png"></div></div>',iconSize:[60,60],iconAnchor:[30,60]});
 icons.daniela=L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle daniela-pin"></div></div>',iconSize:[60,60],iconAnchor:[30,60]});
 
 var artesanos=[
@@ -156,7 +156,7 @@ map.on("popupopen",controlarZoomAlAbrirPopup);
 map.on("popupclose",controlarZoomAlCerrarPopup);
 artesanos.forEach(function(a){
 if(!Array.isArray(a.coords)||a.coords.length!==2)return;
-if(a.artesana==="Daniela Colli Huenchumilla"){
+if(a.nombre==="Patranka Artesanal"||a.nombre==="Rayün Expresión Artística"){
 if(!danielaMarker){danielaMarker=L.marker(a.coords,{icon:icons.daniela}).addTo(map);danielaMarker.on('click',ocultarSimbologia);danielaMarker.coords=a.coords;danielaMarker.emprendimientos=[a];markers.push(danielaMarker);}
 else danielaMarker.emprendimientos.push(a);
 return;
@@ -181,15 +181,19 @@ danielaMarker.on('popupclose',controlarZoomAlCerrarPopup);
 }
 
 function mostrarEmprendimiento(coords,indice){
-let datos=[
-artesanos.find(a=>a.nombre==="Patranka Artesanal"&&Array.isArray(a.coords)&&a.coords[0]===coords[0]&&a.coords[1]===coords[1]),
-artesanos.find(a=>a.nombre==="Rayün Expresión Artística"&&Array.isArray(a.coords)&&a.coords[0]===coords[0]&&a.coords[1]===coords[1])
-];
-if(!datos[indice])return;
-let marker=markers.find(m=>m.coords[0]===coords[0]&&m.coords[1]===coords[1]);if(!marker)return;
-let popup=crearPopup(datos[indice])+'<br><button type="button" class="popup-link maps boton-volver">🔙 Ver los otros emprendimientos</button>';
-marker.setPopupContent(popup);marker.openPopup();
-setTimeout(function(){let p=marker.getPopup().getElement();if(!p)return;L.DomEvent.disableClickPropagation(p);let b=p.querySelector('.boton-volver');if(b)b.onclick=function(e){e.preventDefault();e.stopPropagation();mostrarOpcionesDaniela(coords);};},50);
+var nombre=indice===0?"Patranka Artesanal":"Rayün Expresión Artística";
+var a=artesanos.find(function(x){
+return x.nombre===nombre&&Array.isArray(x.coords)&&x.coords.length===2&&x.coords[0]===coords[0]&&x.coords[1]===coords[1];
+});
+if(!a)return;
+var popup=crearPopup(a)+'<br><button type="button" class="popup-link maps boton-volver">🔙 Ver los otros emprendimientos</button>';
+L.popup({maxWidth:620,closeButton:true}).setLatLng(coords).setContent(popup).openOn(map);
+setTimeout(function(){
+var p=document.querySelector(".leaflet-popup:last-of-type .leaflet-popup-content");if(!p)return;
+L.DomEvent.disableClickPropagation(p);
+var b=p.querySelector('.boton-volver');
+if(b)b.onclick=function(e){e.preventDefault();e.stopPropagation();mostrarOpcionesDaniela(coords);};
+},50);
 }
 function mostrarOpcionesDaniela(coords){
 let marker=markers.find(m=>m.coords[0]===coords[0]&&m.coords[1]===coords[1]);if(!marker)return;
