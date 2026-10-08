@@ -39,6 +39,12 @@ header span{display:block;width:100%;}
 .daniela-iconos{width:40px;height:40px;display:flex;align-items:center;justify-content:center;gap:3px;transform:rotate(45deg);}
 .daniela-iconos img{width:18px;height:18px;object-fit:cover;border:2px solid white;border-radius:50%;}
 
+/* Etiqueta de identificación de los pines */
+.artesano-tooltip{background:#d9efd2;border:1.5px solid #8fbd84;border-radius:9px;box-shadow:0 3px 9px rgba(0,0,0,.22);color:#3f4a3b;padding:6px 9px;font-family:Arial,sans-serif;font-size:13px;line-height:1.18;white-space:nowrap;text-align:center;}
+.artesano-tooltip::before{border-top-color:#8fbd84 !important;}
+.artesano-tooltip .tooltip-artesano{font-weight:bold;color:#355b32;display:block;}
+.artesano-tooltip .tooltip-emprendimiento{font-size:12px;color:#52614e;display:block;margin-top:2px;}
+
 #directorio-bar{position:relative;width:100%;background:#fffdf8;border-bottom:2px solid #6b4f3b;text-align:right;padding:7px 18px;box-sizing:border-box;z-index:1000;}
 #directorio-btn{position:static;transform:none;z-index:1000;background:#fffdf8;color:#6b4f3b;border:2px solid #6b4f3b;border-radius:8px;padding:8px 12px;font-family:'Times New Roman',serif;font-size:16px;font-weight:bold;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25);}
 #directorio-panel{display:none;position:absolute;top:58px;right:18px;z-index:1001;width:330px;max-height:70vh;overflow-y:auto;background:#fffdf8;border:2px solid #6b4f3b;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.35);}
@@ -157,11 +163,11 @@ map.on("popupclose",controlarZoomAlCerrarPopup);
 artesanos.forEach(function(a){
 if(!Array.isArray(a.coords)||a.coords.length!==2)return;
 if(a.nombre==="Patranka Artesanal"||a.nombre==="Rayün Expresión Artística"){
-if(!danielaMarker){danielaMarker=L.marker(a.coords,{icon:icons.daniela}).addTo(map);danielaMarker.on('click',ocultarSimbologia);danielaMarker.coords=a.coords;danielaMarker.emprendimientos=[a];markers.push(danielaMarker);}
+if(!danielaMarker){danielaMarker=L.marker(a.coords,{icon:icons.daniela}).addTo(map);danielaMarker.on('click',ocultarSimbologia);danielaMarker.coords=a.coords;danielaMarker.emprendimientos=[a];danielaMarker.bindTooltip('<span class="tooltip-artesano">Daniela Colli Huenchumilla</span><span class="tooltip-emprendimiento">Patranka Artesanal · Rayün Expresión Artística</span>',{direction:"top",offset:[0,-50],opacity:1,sticky:true,className:"artesano-tooltip"});danielaMarker.on('touchstart',function(){this.openTooltip();});markers.push(danielaMarker);}
 else danielaMarker.emprendimientos.push(a);
 return;
 }
-var marker=L.marker(a.coords,{icon:icons[a.tipo]||icons.textil}).addTo(map);marker.coords=a.coords;marker.emprendimientos=[a];marker.bindPopup(crearPopup(a));marker.on('click',ocultarSimbologia);marker.on('popupopen',function(e){controlarZoomAlAbrirPopup(e);});
+var marker=L.marker(a.coords,{icon:icons[a.tipo]||icons.textil}).addTo(map);marker.coords=a.coords;marker.emprendimientos=[a];marker.bindPopup(crearPopup(a));marker.bindTooltip('<span class="tooltip-artesano">'+(a.artesana||a.artesano||"")+'</span><span class="tooltip-emprendimiento">'+a.nombre+'</span>',{direction:"top",offset:[0,-50],opacity:1,sticky:true,className:"artesano-tooltip"});marker.on('click',ocultarSimbologia);marker.on('touchstart',function(){this.openTooltip();});marker.on('popupopen',function(e){controlarZoomAlAbrirPopup(e);});
 marker.on('popupclose',controlarZoomAlCerrarPopup);markers.push(marker);
 });
 
