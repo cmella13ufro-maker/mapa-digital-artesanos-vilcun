@@ -163,7 +163,7 @@ map.on("popupclose",controlarZoomAlCerrarPopup);
 artesanos.forEach(function(a){
 if(!Array.isArray(a.coords)||a.coords.length!==2)return;
 if(a.nombre==="Patranka Artesanal"||a.nombre==="Rayün Expresión Artística"){
-if(!danielaMarker){danielaMarker=L.marker(a.coords,{icon:icons.daniela}).addTo(map);danielaMarker.on('click',ocultarSimbologia);danielaMarker.coords=a.coords;danielaMarker.emprendimientos=[a];danielaMarker.bindTooltip('<span class="tooltip-artesano">Daniela Colli Huenchumilla</span><span class="tooltip-emprendimiento">Patranka Artesanal · Rayün Expresión Artística</span>',{direction:"top",offset:[0,-50],opacity:1,sticky:true,permanent:window.innerWidth<=800,className:"artesano-tooltip"});markers.push(danielaMarker);}
+if(!danielaMarker){danielaMarker=L.marker(a.coords,{icon:icons.daniela}).addTo(map);danielaMarker.on('click',ocultarSimbologia);danielaMarker.coords=a.coords;danielaMarker.emprendimientos=[a];danielaMarker.bindTooltip('<span class="tooltip-artesano">Daniela Colli Huenchumilla</span><span class="tooltip-emprendimiento">Patranka Artesanal · Rayün Expresión Artística</span>',{direction:"top",offset:[0,-50],opacity:1,sticky:true,permanent:false,className:"artesano-tooltip"});markers.push(danielaMarker);}
 else danielaMarker.emprendimientos.push(a);
 return;
 }
