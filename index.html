@@ -43,7 +43,7 @@ header span{display:block;width:100%;}
 .artesano-tooltip{background:#d9efd2;border:1.5px solid #8fbd84;border-radius:9px;box-shadow:0 3px 9px rgba(0,0,0,.22);color:#3f4a3b;padding:6px 9px;font-family:Arial,sans-serif;font-size:13px;line-height:1.18;white-space:nowrap;text-align:center;}
 .artesano-tooltip::before{border-top-color:#8fbd84 !important;}
 .artesano-tooltip .tooltip-artesano{font-weight:bold;color:#355b32;display:block;}
-.artesano-tooltip .tooltip-emprendimiento{font-size:12px;color:#52614e;display:block;margin-top:2px;}
+.artesano-tooltip .tooltip-emprendimiento{font-size:12px;color:#52614e;display:block;margin-top:2px;}@media (pointer:coarse){.artesano-tooltip{font-size:12px;padding:5px 8px;max-width:190px;white-space:normal;}.artesano-tooltip .tooltip-artesano,.artesano-tooltip .tooltip-emprendimiento{display:block;}}
 
 #directorio-bar{position:relative;width:100%;background:#fffdf8;border-bottom:2px solid #6b4f3b;text-align:right;padding:7px 18px;box-sizing:border-box;z-index:1000;}
 #directorio-btn{position:static;transform:none;z-index:1000;background:#fffdf8;color:#6b4f3b;border:2px solid #6b4f3b;border-radius:8px;padding:8px 12px;font-family:'Times New Roman',serif;font-size:16px;font-weight:bold;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25);}
@@ -163,11 +163,11 @@ map.on("popupclose",controlarZoomAlCerrarPopup);
 artesanos.forEach(function(a){
 if(!Array.isArray(a.coords)||a.coords.length!==2)return;
 if(a.nombre==="Patranka Artesanal"||a.nombre==="Rayün Expresión Artística"){
-if(!danielaMarker){danielaMarker=L.marker(a.coords,{icon:icons.daniela}).addTo(map);danielaMarker.coords=a.coords;danielaMarker.emprendimientos=[a];danielaMarker.bindTooltip('<span class="tooltip-artesano">Daniela Colli Huenchumilla</span><span class="tooltip-emprendimiento">Patranka Artesanal · Rayün Expresión Artística</span>',{direction:"top",offset:[0,-50],opacity:1,sticky:true,className:"artesano-tooltip"});danielaMarker.on('click',function(e){if(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches){if(this._movilEtiqueta){this._movilEtiqueta=false;this.closeTooltip();this.openPopup();}else{this._movilEtiqueta=true;this.openTooltip();}ocultarSimbologia();return;}ocultarSimbologia();this.openPopup();});markers.push(danielaMarker);}
+if(!danielaMarker){danielaMarker=L.marker(a.coords,{icon:icons.daniela}).addTo(map);danielaMarker.coords=a.coords;danielaMarker.emprendimientos=[a];danielaMarker.bindTooltip('<span class="tooltip-artesano">Daniela Colli Huenchumilla</span><span class="tooltip-emprendimiento">Patranka Artesanal · Rayün Expresión Artística</span>',{direction:"top",offset:[0,-50],opacity:1,sticky:true,permanent:window.matchMedia&&window.matchMedia('(pointer:coarse)').matches,className:"artesano-tooltip"});danielaMarker.on('click',ocultarSimbologia);markers.push(danielaMarker);}
 else danielaMarker.emprendimientos.push(a);
 return;
 }
-var marker=L.marker(a.coords,{icon:icons[a.tipo]||icons.textil}).addTo(map);marker.coords=a.coords;marker.emprendimientos=[a];marker.bindPopup(crearPopup(a));marker.off('click');marker.on('click',function(e){if(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches){if(this._movilEtiqueta){this._movilEtiqueta=false;this.closeTooltip();this.openPopup();}else{this._movilEtiqueta=true;this.openTooltip();}ocultarSimbologia();return;}ocultarSimbologia();this.openPopup();});marker.bindTooltip('<span class="tooltip-artesano">'+(a.artesana||a.artesano||"")+'</span><span class="tooltip-emprendimiento">'+a.nombre+'</span>',{direction:"top",offset:[0,-50],opacity:1,sticky:true,className:"artesano-tooltip"});marker.on('popupopen',function(e){controlarZoomAlAbrirPopup(e);});
+var marker=L.marker(a.coords,{icon:icons[a.tipo]||icons.textil}).addTo(map);marker.coords=a.coords;marker.emprendimientos=[a];marker.bindPopup(crearPopup(a));marker.bindTooltip('<span class="tooltip-artesano">'+(a.artesana||a.artesano||"")+'</span><span class="tooltip-emprendimiento">'+a.nombre+'</span>',{direction:"top",offset:[0,-50],opacity:1,sticky:true,permanent:window.matchMedia&&window.matchMedia('(pointer:coarse)').matches,className:"artesano-tooltip"});marker.on('click',ocultarSimbologia);marker.on('popupopen',function(e){controlarZoomAlAbrirPopup(e);});
 marker.on('popupclose',controlarZoomAlCerrarPopup);markers.push(marker);
 });
 
