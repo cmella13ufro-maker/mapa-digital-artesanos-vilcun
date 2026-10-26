@@ -48,17 +48,19 @@ header span{display:block;width:100%;}
 .directorio-head{padding:12px 14px;background:#6b4f3b;color:white;font-weight:bold;font-size:18px;}
 .directorio-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-bottom:1px solid #d6c2a8;background:#fffdf8;}
 .directorio-item:last-child{border-bottom:none;}
+.directorio-categoria{border-bottom:1px solid #d6c2a8;}
+.directorio-categoria summary{cursor:pointer;padding:12px 14px;color:#6b4f3b;font-weight:bold;font-size:15px;background:#f4f1ea;list-style-position:inside;}
+.directorio-categoria summary:hover{background:#eee5d8;}
+.directorio-cantidad{font-weight:normal;color:#766454;font-size:13px;}
+.directorio-lista{background:#fffdf8;}
+.directorio-cerrar{float:right;background:transparent;border:0;color:white;font-size:22px;cursor:pointer;line-height:1;}
 .directorio-nombre{color:#6b4f3b;font-weight:bold;font-size:14px !important;}
 .directorio-ver{flex:none;background:#6b4f3b;color:white;border:none;border-radius:7px;padding:6px 9px;cursor:pointer;font-family:'Times New Roman',serif;}
 
-#simbologia{position:absolute;left:18px;bottom:18px;z-index:1000;width:280px;max-width:calc(100vw - 36px);background:#fffdf8;border:2px solid #6b4f3b;border-radius:10px;box-shadow:0 3px 10px rgba(0,0,0,.3);padding:10px 12px;box-sizing:border-box;}
-.simbologia-oculta{display:none !important;}.simbologia-titulo{font-weight:bold;color:#6b4f3b;font-size:17px;margin-bottom:7px;text-align:center;}
-.simbologia-item{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:14px;color:#333;}
-.simbologia-item img{width:25px;height:25px;object-fit:cover;border-radius:50%;border:1px solid #d6c2a8;flex:none;}
+
 
 @media(max-width:800px){
-#simbologia{left:8px;bottom:8px;width:250px;padding:8px 10px;}
-.simbologia-titulo{font-size:15px}.simbologia-item{font-size:12px;margin:4px 0}.simbologia-item img{width:22px;height:22px;}
+
 .leaflet-popup-content-wrapper{width:94vw;max-width:94vw;box-sizing:border-box;}
 .leaflet-popup-content-wrapper{max-height:calc(100vh - 145px);overflow:hidden;}
 .leaflet-popup-content{width:auto !important;max-width:none;margin:12px;font-family:Arial,sans-serif;font-size:19px;line-height:1.42;max-height:calc(100vh - 175px);overflow-y:auto;overflow-x:hidden;touch-action:pan-y;}
@@ -84,17 +86,6 @@ header span{width:100%;padding:0;box-sizing:border-box;}
 <div id="directorio-bar"><button id="directorio-btn" type="button">☰ PERFILES DE ARTESANOS</button></div>
 <div id="map"></div>
 
-<div id="simbologia">
-<div class="simbologia-titulo">Simbología de iconos</div>
-<div class="simbologia-item"><img src="ICONOS RUBRO/icono_textil.png">Artesanía textil</div>
-<div class="simbologia-item"><img src="ICONOS RUBRO/icono_cuero.png">Artesanía en cuero</div>
-<div class="simbologia-item"><img src="ICONOS RUBRO/icono_artesania_en_cacho.png">Artesanía en cacho</div>
-<div class="simbologia-item"><img src="ICONOS RUBRO/icono_cesteria.png">Artesanía en fibra vegetal</div>
-<div class="simbologia-item"><img src="ICONOS RUBRO/icono_madera.png">Artesanía en madera</div>
-<div class="simbologia-item"><img src="ICONOS RUBRO/icono_suculentas.png">Artesanía con suculentas</div>
-<div class="simbologia-item"><img src="ICONOS RUBRO/icono_acrilico.png">Artesanía con acrílico</div>
-<div class="simbologia-item"><img src="ICONOS RUBRO/icono_platería_mapuche_.png">Artesanía mapuche</div>
-</div>
 <div id="directorio-panel"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -151,8 +142,8 @@ function galeriaSiguiente(){if(galeriaFotos.length){galeriaIndice=(galeriaIndice
 function cerrarGaleria(){var overlay=document.getElementById('galeria-overlay');if(overlay)overlay.remove();}
 
 var markers=[],danielaMarker=null;
-function ocultarSimbologia(){var s=document.getElementById('simbologia');if(s)s.classList.add('simbologia-oculta');}
-function mostrarSimbologia(){var s=document.getElementById('simbologia');if(s)s.classList.remove('simbologia-oculta');}
+function ocultarSimbologia(){}
+function mostrarSimbologia(){}
 function controlarZoomAlAbrirPopup(e){ocultarSimbologia();map.touchZoom.disable();var z=document.querySelector(".leaflet-control-zoom");if(z)z.style.display="none";var p=e.popup.getElement();if(p){L.DomEvent.disableClickPropagation(p);L.DomEvent.disableScrollPropagation(p);}}
 function controlarZoomAlCerrarPopup(){map.touchZoom.enable();var z=document.querySelector(".leaflet-control-zoom");if(z)z.style.display="";mostrarSimbologia();}
 map.on("popupopen",controlarZoomAlAbrirPopup);
@@ -214,8 +205,28 @@ L.popup({maxWidth:520}).setLatLng(map.getCenter()).setContent(crearPopup(a)).ope
 }
 function construirDirectorio(){
 var panel=document.getElementById('directorio-panel');if(!panel)return;
-var html='<div class="directorio-head">Emprendimientos <button type="button" class="directorio-cerrar" onclick="cerrarDirectorio()">×</button></div>';
-artesanos.forEach(function(a,indice){var nombre=a.nombre;if(a.artesano==="Claudio Ovando Leon")nombre+=" - Digital";html+='<div class="directorio-item"><span class="directorio-nombre">'+nombre+'</span><button type="button" class="directorio-ver" onclick="abrirPerfilDesdeDirectorio('+indice+')">Ver perfil</button></div>';});
+var categorias=[
+{tipo:"textil",titulo:"Artesanía textil"},
+{tipo:"cesteria",titulo:"Cestería y fibra vegetal"},
+{tipo:"cuero",titulo:"Artesanía en cuero"},
+{tipo:"plateria",titulo:"Platería y joyería en plata"},
+{tipo:"cacho",titulo:"Artesanía en cacho"},
+{tipo:"madera",titulo:"Artesanía en madera"},
+{tipo:"suculentas",titulo:"Artesanía con suculentas"}
+];
+var html='<div class="directorio-head">Artesanías por rubro <button type="button" class="directorio-cerrar" onclick="cerrarDirectorio()">×</button></div>';
+categorias.forEach(function(cat,ci){
+var lista=artesanos.map(function(a,indice){return {a:a,indice:indice};}).filter(function(item){return item.a.tipo===cat.tipo;});
+if(!lista.length)return;
+html+='<details class="directorio-categoria"'+(ci===0?' open':'')+'><summary>'+cat.titulo+' <span class="directorio-cantidad">('+lista.length+')</span></summary><div class="directorio-lista">';
+lista.forEach(function(item){
+var a=item.a;
+var nombre=a.nombre;
+if(a.artesano==="Claudio Ovando Leon")nombre+=" - Digital";
+html+='<div class="directorio-item"><span class="directorio-nombre">'+nombre+'</span><button type="button" class="directorio-ver" onclick="abrirPerfilDesdeDirectorio('+item.indice+')">Ver perfil</button></div>';
+});
+html+='</div></details>';
+});
 panel.innerHTML=html;
 }
 function cerrarDirectorio(){var panel=document.getElementById('directorio-panel');if(panel)panel.style.display='none';}
