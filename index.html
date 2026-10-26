@@ -51,6 +51,7 @@ header span{display:block;width:100%;}
 .directorio-categoria{border-bottom:1px solid #d6c2a8;}
 .directorio-categoria summary{cursor:pointer;padding:12px 14px;color:#6b4f3b;font-weight:bold;font-size:15px;background:#f4f1ea;list-style-position:inside;}
 .directorio-categoria summary:hover{background:#eee5d8;}
+.directorio-categoria-icono{width:25px;height:25px;object-fit:cover;border-radius:50%;border:1px solid #d6c2a8;vertical-align:middle;margin-right:8px;background:#fffdf8;}
 .directorio-cantidad{font-weight:normal;color:#766454;font-size:13px;}
 .directorio-lista{background:#fffdf8;}
 .directorio-cerrar{float:right;background:transparent;border:0;color:white;font-size:22px;cursor:pointer;line-height:1;}
@@ -206,19 +207,19 @@ L.popup({maxWidth:520}).setLatLng(map.getCenter()).setContent(crearPopup(a)).ope
 function construirDirectorio(){
 var panel=document.getElementById('directorio-panel');if(!panel)return;
 var categorias=[
-{tipo:"textil",titulo:"Artesanía textil"},
-{tipo:"cesteria",titulo:"Cestería y fibra vegetal"},
-{tipo:"cuero",titulo:"Artesanía en cuero"},
-{tipo:"plateria",titulo:"Platería y joyería en plata"},
-{tipo:"cacho",titulo:"Artesanía en cacho"},
-{tipo:"madera",titulo:"Artesanía en madera"},
-{tipo:"suculentas",titulo:"Artesanía con suculentas"}
+{tipo:"textil",titulo:"Artesanía textil",icono:"ICONOS RUBRO/icono_textil.png"},
+{tipo:"cesteria",titulo:"Cestería y fibra vegetal",icono:"ICONOS RUBRO/icono_cesteria.png"},
+{tipo:"cuero",titulo:"Artesanía en cuero",icono:"ICONOS RUBRO/icono_cuero.png"},
+{tipo:"plateria",titulo:"Platería y joyería en plata",icono:"ICONOS RUBRO/icono_platería_mapuche_.png"},
+{tipo:"cacho",titulo:"Artesanía en cacho",icono:"ICONOS RUBRO/icono_artesania_en_cacho.png"},
+{tipo:"madera",titulo:"Artesanía en madera",icono:"ICONOS RUBRO/icono_madera.png"},
+{tipo:"suculentas",titulo:"Artesanía con suculentas",icono:"ICONOS RUBRO/icono_suculentas.png"}
 ];
 var html='<div class="directorio-head">Artesanías por rubro <button type="button" class="directorio-cerrar" onclick="cerrarDirectorio()">×</button></div>';
 categorias.forEach(function(cat,ci){
 var lista=artesanos.map(function(a,indice){return {a:a,indice:indice};}).filter(function(item){return item.a.tipo===cat.tipo;});
 if(!lista.length)return;
-html+='<details class="directorio-categoria"'+(ci===0?' open':'')+'><summary>'+cat.titulo+' <span class="directorio-cantidad">('+lista.length+')</span></summary><div class="directorio-lista">';
+html+='<details class="directorio-categoria"'+(ci===0?' open':'')+'><summary><img class="directorio-categoria-icono" src="'+cat.icono+'" alt="">'+cat.titulo+' <span class="directorio-cantidad">('+lista.length+')</span></summary><div class="directorio-lista">';
 lista.forEach(function(item){
 var a=item.a;
 var nombre=a.nombre;
