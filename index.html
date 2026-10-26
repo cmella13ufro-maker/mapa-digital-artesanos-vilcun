@@ -49,7 +49,7 @@ header span{display:block;width:100%;}
 .directorio-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-bottom:1px solid #d6c2a8;background:#fffdf8;}
 .directorio-item:last-child{border-bottom:none;}
 .directorio-categoria{border-bottom:1px solid #d6c2a8;}
-.directorio-categoria summary{cursor:pointer;padding:12px 14px;color:#6b4f3b;font-weight:bold;font-size:15px;background:#f4f1ea;list-style-position:inside;}
+.directorio-categoria summary{cursor:pointer;padding:12px 14px;color:#6b4f3b;font-weight:bold;font-size:15px;background:#f4f1ea;list-style-position:inside;}.directorio-categoria summary .directorio-categoria-icono{display:inline-block;width:25px;height:25px;min-width:25px;object-fit:contain;vertical-align:middle;margin:0 8px 0 4px;}
 .directorio-categoria summary:hover{background:#eee5d8;}
 .directorio-categoria-icono{width:25px;height:25px;object-fit:cover;border-radius:50%;border:1px solid #d6c2a8;vertical-align:middle;margin-right:8px;background:#fffdf8;}
 .directorio-cantidad{font-weight:normal;color:#766454;font-size:13px;}
@@ -98,14 +98,14 @@ var vilcun={"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-72.3
 L.geoJSON(vilcun,{style:{color:"#8b5a2b",weight:3,fillColor:"#c2b280",fillOpacity:.15}}).addTo(map);
 
 var icons={
-textil:L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS RUBRO/icono_textil.png"></div></div>',iconSize:[60,60],iconAnchor:[30,60]}),
-madera:L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS RUBRO/icono_madera.png"></div></div>',iconSize:[60,60],iconAnchor:[30,60]}),
-suculentas:L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS RUBRO/icono_suculentas.png"></div></div>',iconSize:[60,60],iconAnchor:[30,60]}),
-cacho:L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS RUBRO/icono_artesania_en_cacho.png"></div></div>',iconSize:[60,60],iconAnchor:[30,60]})
+textil:L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS%20RUBRO/icono_textil.png"></div></div>',iconSize:[60,60],iconAnchor:[30,60]}),
+madera:L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS%20RUBRO/icono_madera.png"></div></div>',iconSize:[60,60],iconAnchor:[30,60]}),
+suculentas:L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS%20RUBRO/icono_suculentas.png"></div></div>',iconSize:[60,60],iconAnchor:[30,60]}),
+cacho:L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS%20RUBRO/icono_artesania_en_cacho.png"></div></div>',iconSize:[60,60],iconAnchor:[30,60]})
 };
-icons.cuero=L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS RUBRO/icono_cuero.png"></div></div>',iconSize:[60,60],iconAnchor:[30,60]});
-icons.cesteria=L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS RUBRO/icono_cesteria.png"></div></div>',iconSize:[60,60],iconAnchor:[30,60]});
-icons.plateria=L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS RUBRO/icono_platería_mapuche_.png"></div></div>',iconSize:[60,60],iconAnchor:[30,60]});
+icons.cuero=L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS%20RUBRO/icono_cuero.png"></div></div>',iconSize:[60,60],iconAnchor:[30,60]});
+icons.cesteria=L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS%20RUBRO/icono_cesteria.png"></div></div>',iconSize:[60,60],iconAnchor:[30,60]});
+icons.plateria=L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle"><img src="ICONOS%20RUBRO/icono_plater%C3%ADa_mapuche_.png"></div></div>',iconSize:[60,60],iconAnchor:[30,60]});
 icons.daniela=L.divIcon({html:'<div class="pin-wrapper"><div class="pin-circle daniela-pin"></div></div>',iconSize:[60,60],iconAnchor:[30,60]});
 
 var artesanos=[
@@ -161,7 +161,7 @@ marker.on('popupclose',controlarZoomAlCerrarPopup);markers.push(marker);
 });
 
 function popupDaniela(){
-return '<div class="popup-title">📍 Daniela Colli</div><div class="popup-subtitle">Selecciona un emprendimiento</div><button type="button" class="popup-link maps boton-patranka"><img class="emprendimiento-icono" src="ICONOS RUBRO/icono_platería_mapuche_.png">Patranka Artesanal</button><button type="button" class="popup-link instagram boton-rayun"><img class="emprendimiento-icono" src="ICONOS RUBRO/icono_acrilico.png">Rayün Expresión Artística</button>';
+return '<div class="popup-title">📍 Daniela Colli</div><div class="popup-subtitle">Selecciona un emprendimiento</div><button type="button" class="popup-link maps boton-patranka"><img class="emprendimiento-icono" src="ICONOS%20RUBRO/icono_plater%C3%ADa_mapuche_.png">Patranka Artesanal</button><button type="button" class="popup-link instagram boton-rayun"><img class="emprendimiento-icono" src="ICONOS RUBRO/icono_acrilico.png">Rayün Expresión Artística</button>';
 }
 if(danielaMarker){
 danielaMarker.bindPopup(popupDaniela());
@@ -207,13 +207,13 @@ L.popup({maxWidth:520}).setLatLng(map.getCenter()).setContent(crearPopup(a)).ope
 function construirDirectorio(){
 var panel=document.getElementById('directorio-panel');if(!panel)return;
 var categorias=[
-{tipo:"textil",titulo:"Artesanía textil",icono:"ICONOS RUBRO/icono_textil.png"},
-{tipo:"cesteria",titulo:"Cestería y fibra vegetal",icono:"ICONOS RUBRO/icono_cesteria.png"},
-{tipo:"cuero",titulo:"Artesanía en cuero",icono:"ICONOS RUBRO/icono_cuero.png"},
-{tipo:"plateria",titulo:"Platería y joyería en plata",icono:"ICONOS RUBRO/icono_platería_mapuche_.png"},
-{tipo:"cacho",titulo:"Artesanía en cacho",icono:"ICONOS RUBRO/icono_artesania_en_cacho.png"},
-{tipo:"madera",titulo:"Artesanía en madera",icono:"ICONOS RUBRO/icono_madera.png"},
-{tipo:"suculentas",titulo:"Artesanía con suculentas",icono:"ICONOS RUBRO/icono_suculentas.png"}
+{tipo:"textil",titulo:"Artesanía textil",icono:"ICONOS%20RUBRO/icono_textil.png"},
+{tipo:"cesteria",titulo:"Cestería y fibra vegetal",icono:"ICONOS%20RUBRO/icono_cesteria.png"},
+{tipo:"cuero",titulo:"Artesanía en cuero",icono:"ICONOS%20RUBRO/icono_cuero.png"},
+{tipo:"plateria",titulo:"Platería y joyería en plata",icono:"ICONOS%20RUBRO/icono_plater%C3%ADa_mapuche_.png"},
+{tipo:"cacho",titulo:"Artesanía en cacho",icono:"ICONOS%20RUBRO/icono_artesania_en_cacho.png"},
+{tipo:"madera",titulo:"Artesanía en madera",icono:"ICONOS%20RUBRO/icono_madera.png"},
+{tipo:"suculentas",titulo:"Artesanía con suculentas",icono:"ICONOS%20RUBRO/icono_suculentas.png"}
 ];
 var html='<div class="directorio-head">Artesanías por rubro <button type="button" class="directorio-cerrar" onclick="cerrarDirectorio()">×</button></div>';
 categorias.forEach(function(cat,ci){
